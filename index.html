@@ -1,486 +1,1131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRA Campaign Poster - Enhanced</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRA — Ship Features, Not Vulnerabilities</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Barlow+Condensed:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0a0a08;
+            --paper: #f0ede6;
+            --amber: #f4a823;
+            --amber-dim: #b87a18;
+            --red: #d93025;
+            --red-bright: #ff3b2e;
+            --green: #1e7a47;
+            --green-bright: #2aab63;
+            --blue: #1351a8;
+            --muted: #7a776e;
+            --light-muted: #c5c2bb;
+            --off-white: #f7f4ee;
+            --card-bg: rgba(255,255,255,0.06);
+            --border: rgba(244,168,35,0.25);
+        }
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #0b0b0f;
-    overflow-x: hidden;
-}
+        body {
+            font-family: 'Barlow Condensed', sans-serif;
+            background: #1a1a16;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
 
-/* ===== BACKGROUND GLOW LAYERS ===== */
-.bg-glow {
-    position: fixed;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.25;
-    animation: floatGlow 12s infinite ease-in-out;
-    z-index: 0;
-}
+        .poster {
+            width: 100%;
+            max-width: 960px;
+            background: var(--ink);
+            position: relative;
+            overflow: hidden;
+        }
 
-.bg-glow.one {
-    background: #ff3c3c;
-    top: -200px;
-    left: -200px;
-}
+        /* ——— NOISE TEXTURE OVERLAY ——— */
+        .poster::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.6;
+        }
 
-.bg-glow.two {
-    background: #ffb300;
-    bottom: -200px;
-    right: -200px;
-    animation-delay: 3s;
-}
+        /* ——————————————————————————
+           HERO
+        —————————————————————————— */
+        .hero {
+            position: relative;
+            padding: 0;
+            overflow: hidden;
+            background: var(--ink);
+            border-bottom: 1px solid rgba(244,168,35,0.3);
+        }
 
-@keyframes floatGlow {
-    0%,100% { transform: translateY(0px) scale(1); }
-    50% { transform: translateY(60px) scale(1.2); }
-}
+        .hero-bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(244,168,35,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(244,168,35,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
 
-/* ===== PARTICLE CANVAS ===== */
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1;
-}
+        .hero-scan {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--amber), transparent);
+            animation: scan 4s linear infinite;
+            opacity: 0.6;
+        }
 
-/* ===== POSTER ===== */
-.poster {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 900px;
-    margin: 40px auto;
-    background: rgba(255,255,255,0.98);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-    animation: fadeIn 1.2s ease-out;
-}
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        .hero-glow {
+            position: absolute;
+            top: -100px; right: -100px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(244,168,35,0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
 
-/* ===== HERO ===== */
-.hero {
-    background: linear-gradient(135deg, #0d0d12, #1b1b22);
-    padding: 70px 40px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 0;
+            padding: 60px 56px 0;
+        }
 
-.hero h1 {
-    font-size: 54px;
-    color: white;
-    animation: pulseText 3s infinite;
-}
+        .hero-text-block {}
 
-@keyframes pulseText {
-    0%,100% { text-shadow: 0 0 10px rgba(255,140,0,0.2); }
-    50% { text-shadow: 0 0 30px rgba(255,140,0,0.6); }
-}
+        .hero-eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            color: var(--amber);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-.highlight {
-    color: #ffb300;
-    display: block;
-}
+        .hero-eyebrow::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: var(--amber);
+        }
 
-/* ===== CARDS ===== */
-.req-card {
-    transition: transform .4s, box-shadow .4s;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(72px, 10vw, 108px);
+            line-height: 0.92;
+            color: var(--paper);
+            letter-spacing: 0.01em;
+            margin-bottom: 10px;
+        }
 
-.req-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-}
+        .hero h1 .line-red {
+            color: var(--red-bright);
+            display: block;
+            position: relative;
+        }
 
-/* explosion flash on hover */
-.req-card::after {
-    content: "";
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 60%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-    transition: transform .6s, opacity .6s;
-}
+        .hero h1 .line-red::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 3px;
+            color: var(--amber);
+            opacity: 0.3;
+            clip-path: polygon(0 30%, 100% 30%, 100% 55%, 0 55%);
+        }
 
-.req-card:hover::after {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0;
-    animation: flash 0.6s ease-out;
-}
+        .hero-sub {
+            font-size: 16px;
+            font-weight: 300;
+            color: var(--light-muted);
+            letter-spacing: 0.05em;
+            margin-top: 24px;
+            line-height: 1.6;
+            max-width: 440px;
+        }
 
-@keyframes flash {
-    0% { opacity: 0.6; transform: translate(-50%,-50%) scale(0.2); }
-    100% { opacity: 0; transform: translate(-50%,-50%) scale(2); }
-}
+        .hero-badge {
+            background: var(--red);
+            color: #fff;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 10px 18px;
+            display: inline-block;
+            margin-top: 32px;
+            position: relative;
+        }
 
-/* ===== BUTTON ===== */
-.cta-button {
-    background: linear-gradient(90deg, #ffb300, #ff6a00);
-    color: black;
-    padding: 18px 42px;
-    border-radius: 10px;
-    border: none;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all .3s;
-}
+        .hero-badge::before {
+            content: '▶';
+            margin-right: 8px;
+        }
 
-.cta-button:hover {
-    transform: scale(1.08);
-    box-shadow: 0 0 40px rgba(255,140,0,0.6);
-}
+        .hero-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(160px, 22vw, 240px);
+            color: rgba(244,168,35,0.06);
+            line-height: 1;
+            align-self: flex-end;
+            user-select: none;
+            letter-spacing: -0.02em;
+        }
 
-/* floating animation */
-.float {
-    animation: float 4s infinite ease-in-out;
-}
+        .hero-bottom-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            margin-top: 40px;
+            border-top: 1px solid rgba(244,168,35,0.2);
+        }
 
-@keyframes float {
-    0%,100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-}
-</style>
+        .hero-stat {
+            padding: 22px 28px;
+            border-right: 1px solid rgba(244,168,35,0.15);
+        }
+
+        .hero-stat:last-child { border-right: none; }
+
+        .hero-stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            color: var(--amber);
+            line-height: 1;
+        }
+
+        .hero-stat-label {
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        /* ——————————————————————————
+           INTRO STRIP
+        —————————————————————————— */
+        .intro-strip {
+            background: var(--amber);
+            padding: 18px 56px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .intro-strip::after {
+            content: 'CRA · CRA · CRA · CRA · CRA · CRA · CRA · CRA · CRA · CRA ·';
+            position: absolute;
+            right: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 80px;
+            color: rgba(10,10,8,0.07);
+            white-space: nowrap;
+            letter-spacing: 0.05em;
+            pointer-events: none;
+            line-height: 1;
+            top: 50%; transform: translateY(-50%);
+        }
+
+        .intro-strip-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            color: rgba(10,10,8,0.6);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .intro-strip-text {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--ink);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .intro-strip-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(10,10,8,0.3);
+        }
+
+        /* ——————————————————————————
+           SECTION HEADERS
+        —————————————————————————— */
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            gap: 20px;
+            margin-bottom: 48px;
+        }
+
+        .section-number {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: var(--amber);
+            letter-spacing: 0.1em;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            color: var(--paper);
+            letter-spacing: 0.02em;
+            line-height: 1;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(244,168,35,0.2);
+        }
+
+        /* ——————————————————————————
+           REQUIREMENTS
+        —————————————————————————— */
+        .requirements {
+            padding: 64px 56px;
+            background: var(--ink);
+        }
+
+        .req-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background: rgba(244,168,35,0.1);
+            border: 1px solid rgba(244,168,35,0.1);
+        }
+
+        .req-card {
+            background: #0e0e0b;
+            padding: 32px 28px;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+
+        .req-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+        }
+
+        .req-card:hover {
+            background: #141410;
+        }
+
+        .req-card:hover .req-card-bg-num {
+            opacity: 0.06;
+            transform: translate(-10px, -10px);
+        }
+
+        .req-card-bg-num {
+            position: absolute;
+            bottom: -20px; right: -10px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 110px;
+            color: var(--paper);
+            opacity: 0.03;
+            line-height: 1;
+            transition: all 0.4s;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .req-card.c-blue::before { background: #2f80ed; }
+        .req-card.c-red::before { background: var(--red-bright); }
+        .req-card.c-teal::before { background: #1abc9c; }
+        .req-card.c-amber::before { background: var(--amber); }
+        .req-card.c-purple::before { background: #9b59b6; }
+        .req-card.c-green::before { background: var(--green-bright); }
+
+        .req-icon-wrap {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .c-blue .req-icon-wrap { background: rgba(47,128,237,0.12); }
+        .c-red .req-icon-wrap { background: rgba(255,59,46,0.12); }
+        .c-teal .req-icon-wrap { background: rgba(26,188,156,0.12); }
+        .c-amber .req-icon-wrap { background: rgba(244,168,35,0.12); }
+        .c-purple .req-icon-wrap { background: rgba(155,89,182,0.12); }
+        .c-green .req-icon-wrap { background: rgba(42,171,99,0.12); }
+
+        .req-card h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 18px;
+            line-height: 1.2;
+        }
+
+        .c-blue h3 { color: #5ba0f5; }
+        .c-red h3 { color: #ff6b63; }
+        .c-teal h3 { color: #4ecdc4; }
+        .c-amber h3 { color: var(--amber); }
+        .c-purple h3 { color: #c39bd3; }
+        .c-green h3 { color: #52d98a; }
+
+        .req-card ul {
+            list-style: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .req-card li {
+            font-size: 13px;
+            color: var(--light-muted);
+            padding: 6px 0;
+            padding-left: 16px;
+            position: relative;
+            line-height: 1.5;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        .req-card li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            font-size: 10px;
+            top: 8px;
+        }
+
+        .c-blue li::before { color: #2f80ed; }
+        .c-red li::before { color: var(--red-bright); }
+        .c-teal li::before { color: #1abc9c; }
+        .c-amber li::before { color: var(--amber); }
+        .c-purple li::before { color: #9b59b6; }
+        .c-green li::before { color: var(--green-bright); }
+
+        /* ——————————————————————————
+           PIPELINE / REALITY CHECK
+        —————————————————————————— */
+        .pipeline-section {
+            background: #070706;
+            padding: 64px 56px;
+            border-top: 1px solid rgba(244,168,35,0.12);
+            border-bottom: 1px solid rgba(244,168,35,0.12);
+        }
+
+        .pipeline-label-row {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pipeline-label-row.bad { color: #ff6b63; }
+        .pipeline-label-row.good { color: #52d98a; }
+
+        .pipeline-label-row::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: currentColor;
+            opacity: 0.2;
+        }
+
+        .pipeline-track {
+            display: grid;
+            gap: 3px;
+            margin-bottom: 48px;
+        }
+
+        .pipeline-track.bad { grid-template-columns: repeat(5, 1fr); }
+        .pipeline-track.good { grid-template-columns: repeat(5, 1fr); }
+
+        .pipeline-node {
+            padding: 18px 12px;
+            text-align: center;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            position: relative;
+        }
+
+        .pipeline-track.bad .pipeline-node {
+            background: rgba(217,48,37,0.12);
+            color: #ff6b63;
+            border: 1px solid rgba(217,48,37,0.25);
+        }
+
+        .pipeline-track.good .pipeline-node {
+            background: rgba(30,122,71,0.12);
+            color: #52d98a;
+            border: 1px solid rgba(42,171,99,0.25);
+        }
+
+        .pipeline-arrow {
+            position: absolute;
+            right: -14px;
+            top: 50%; transform: translateY(-50%);
+            font-size: 14px;
+            z-index: 2;
+            color: var(--muted);
+        }
+
+        .pipeline-node:last-child .pipeline-arrow { display: none; }
+
+        .pipeline-track.bad .pipeline-node:last-child {
+            background: rgba(217,48,37,0.3);
+            font-weight: 900;
+        }
+
+        .pipeline-track.good .pipeline-node:last-child {
+            background: rgba(42,171,99,0.25);
+            font-weight: 900;
+        }
+
+        .vs-divider {
+            text-align: center;
+            margin: 0 0 32px;
+        }
+
+        .vs-divider span {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            color: rgba(244,168,35,0.3);
+            letter-spacing: 0.2em;
+        }
+
+        /* ——————————————————————————
+           CONSEQUENCES
+        —————————————————————————— */
+        .consequences-section {
+            padding: 64px 56px;
+            background: var(--ink);
+        }
+
+        .consequences-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+        }
+
+        .consequence-panel {
+            padding: 48px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .consequence-panel.neg {
+            background: #140a0a;
+            border: 1px solid rgba(217,48,37,0.2);
+        }
+
+        .consequence-panel.pos {
+            background: #0a1410;
+            border: 1px solid rgba(30,122,71,0.2);
+        }
+
+        .consequence-panel-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .neg .consequence-panel-label { color: #ff6b63; }
+        .pos .consequence-panel-label { color: #52d98a; }
+
+        .consequence-panel-label::before {
+            content: '';
+            display: inline-block;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+        }
+
+        .neg .consequence-panel-label::before { background: var(--red-bright); }
+        .pos .consequence-panel-label::before { background: var(--green-bright); }
+
+        .consequence-headline {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 52px;
+            line-height: 0.95;
+            margin-bottom: 32px;
+            letter-spacing: 0.01em;
+        }
+
+        .neg .consequence-headline { color: #ff6b63; }
+        .pos .consequence-headline { color: #52d98a; }
+
+        .consequence-items {
+            list-style: none;
+        }
+
+        .consequence-items li {
+            font-size: 15px;
+            font-weight: 300;
+            color: var(--light-muted);
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            letter-spacing: 0.03em;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .consequence-items li:last-child { border-bottom: none; }
+
+        .ci-icon {
+            font-size: 14px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .big-penalty {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 72px;
+            color: rgba(217,48,37,0.12);
+            position: absolute;
+            bottom: -10px; right: 20px;
+            line-height: 1;
+            pointer-events: none;
+            letter-spacing: -0.02em;
+        }
+
+        /* ——————————————————————————
+           TIMELINE
+        —————————————————————————— */
+        .timeline-section {
+            padding: 64px 56px;
+            background: #070706;
+            border-top: 1px solid rgba(244,168,35,0.12);
+        }
+
+        .timeline-track {
+            position: relative;
+            padding-top: 24px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 48px;
+            left: 28px; right: 28px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(244,168,35,0.1), rgba(244,168,35,0.5), var(--red));
+        }
+
+        .timeline-nodes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .timeline-node {
+            text-align: center;
+            position: relative;
+        }
+
+        .timeline-dot-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .timeline-dot {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-node:nth-child(1) .timeline-dot {
+            background: rgba(244,168,35,0.15);
+            border: 2px solid var(--amber);
+            color: var(--amber);
+        }
+
+        .timeline-node:nth-child(2) .timeline-dot {
+            background: rgba(244,168,35,0.25);
+            border: 2px solid var(--amber);
+            color: var(--amber);
+        }
+
+        .timeline-node:nth-child(3) .timeline-dot {
+            background: rgba(217,48,37,0.2);
+            border: 2px solid var(--red-bright);
+            color: var(--red-bright);
+            box-shadow: 0 0 20px rgba(217,48,37,0.3);
+            animation: pulse-red 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 20px rgba(217,48,37,0.3); }
+            50% { box-shadow: 0 0 36px rgba(217,48,37,0.6); }
+        }
+
+        .timeline-date {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 30px;
+            letter-spacing: 0.03em;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .timeline-node:nth-child(1) .timeline-date { color: var(--paper); }
+        .timeline-node:nth-child(2) .timeline-date { color: var(--amber); }
+        .timeline-node:nth-child(3) .timeline-date { color: var(--red-bright); }
+
+        .timeline-event {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--paper);
+            margin-bottom: 12px;
+        }
+
+        .timeline-desc {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        /* ——————————————————————————
+           CTA
+        —————————————————————————— */
+        .cta-section {
+            background: var(--amber);
+            padding: 64px 56px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: 'GO';
+            position: absolute;
+            right: -30px; top: -30px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 360px;
+            color: rgba(10,10,8,0.06);
+            line-height: 1;
+            pointer-events: none;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-inner {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-headline {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 64px;
+            color: var(--ink);
+            line-height: 0.95;
+            letter-spacing: 0.01em;
+            margin-bottom: 16px;
+        }
+
+        .cta-body {
+            font-size: 16px;
+            color: rgba(10,10,8,0.65);
+            line-height: 1.6;
+            font-weight: 400;
+            max-width: 480px;
+            letter-spacing: 0.02em;
+        }
+
+        .cta-btn {
+            background: var(--ink);
+            color: var(--amber);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            padding: 20px 40px;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .cta-btn:hover {
+            background: #1a1a14;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(10,10,8,0.25);
+        }
+
+        .cta-btn::after {
+            content: ' ↗';
+            font-size: 14px;
+        }
+
+        /* ——————————————————————————
+           FOOTER
+        —————————————————————————— */
+        .footer {
+            background: #050504;
+            padding: 28px 56px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(244,168,35,0.15);
+        }
+
+        .footer-left {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: rgba(122,119,110,0.7);
+            letter-spacing: 0.12em;
+            line-height: 1.7;
+        }
+
+        .footer-right {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: rgba(244,168,35,0.2);
+            letter-spacing: 0.08em;
+        }
+
+        /* ——————————————————————————
+           RESPONSIVE
+        —————————————————————————— */
+        @media (max-width: 768px) {
+            .hero-inner { grid-template-columns: 1fr; padding: 40px 32px 0; }
+            .hero-number { display: none; }
+            .hero-bottom-bar { grid-template-columns: 1fr; }
+            .hero-stat { border-right: none; border-bottom: 1px solid rgba(244,168,35,0.15); }
+            .req-grid { grid-template-columns: 1fr; }
+            .consequences-grid { grid-template-columns: 1fr; }
+            .cta-inner { grid-template-columns: 1fr; }
+            .timeline-nodes { grid-template-columns: 1fr; }
+            .timeline-line { display: none; }
+            .hero h1 { font-size: 56px; }
+            .requirements, .pipeline-section, .consequences-section, .timeline-section, .cta-section, .footer {
+                padding-left: 32px; padding-right: 32px;
+            }
+            .intro-strip { padding: 14px 32px; flex-wrap: wrap; gap: 12px; }
+            .pipeline-track.bad, .pipeline-track.good { grid-template-columns: 1fr; gap: 2px; }
+            .pipeline-arrow { display: none; }
+        }
+
+        @media print {
+            body { padding: 0; background: white; }
+            .poster { max-width: 100%; box-shadow: none; }
+            .hero-scan { display: none; }
+        }
+    </style>
 </head>
-
 <body>
-
-<div class="bg-glow one"></div>
-<div class="bg-glow two"></div>
-
-<canvas id="particles"></canvas>
 
 <div class="poster">
 
+    <!-- ——— HERO ——— -->
     <div class="hero">
-        <h1>
-            Ship Features.<br>
-            <span class="highlight">Don't Ship Vulnerabilities.</span>
-        </h1>
+        <div class="hero-bg-grid"></div>
+        <div class="hero-scan"></div>
+        <div class="hero-glow"></div>
+
+        <div class="hero-inner">
+            <div class="hero-text-block">
+                <div class="hero-eyebrow">EU Regulation 2024/2847 · Developer Mandate</div>
+                <h1>
+                    Ship Features.<br>
+                    <span class="line-red" data-text="Not Vulnerabilities.">Not Vulnerabilities.</span>
+                </h1>
+                <p class="hero-sub">
+                    The Cyber Resilience Act rewrites the rules of software development in Europe. Compliance is not optional — it is a release blocker.
+                </p>
+                <div class="hero-badge">CRA is not optional — it's law</div>
+            </div>
+            <div class="hero-number">CRA</div>
+        </div>
+
+        <div class="hero-bottom-bar">
+            <div class="hero-stat">
+                <div class="hero-stat-num">€15M</div>
+                <div class="hero-stat-label">Max fine / 2.5% global turnover</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">72H</div>
+                <div class="hero-stat-label">Vulnerability report deadline</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-num">DEC '27</div>
+                <div class="hero-stat-label">Full compliance hard deadline</div>
+            </div>
+        </div>
     </div>
 
-    <!-- (DIN RESTE HTML ER BEVARET — KORTET FOR PLADS) -->
-
-    <div style="padding:40px;text-align:center;">
-        <button class="cta-button float" onclick="explode(event)">
-            Start CRA Checklist
-        </button>
+    <!-- ——— INTRO STRIP ——— -->
+    <div class="intro-strip">
+        <span class="intro-strip-label">Bottom line</span>
+        <div class="intro-strip-divider"></div>
+        <span class="intro-strip-text">Non-compliance = No EU market access. Full stop.</span>
     </div>
 
-</div>
+    <!-- ——— REQUIREMENTS ——— -->
+    <div class="requirements">
+        <div class="section-header">
+            <span class="section-number">01 /</span>
+            <span class="section-title">6 Non-Negotiable Requirements</span>
+            <div class="section-line"></div>
+        </div>
 
-<script>
-/* ===== PARTICLE SYSTEM ===== */
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
+        <div class="req-grid">
+            <div class="req-card c-blue">
+                <div class="req-card-bg-num">01</div>
+                <div class="req-icon-wrap">🎯</div>
+                <h3>Security by Design</h3>
+                <ul>
+                    <li>Plan threats before writing a single line</li>
+                    <li>Threat modeling during the design phase</li>
+                    <li>Security cannot be bolted on afterward</li>
+                    <li>All decisions must be documented</li>
+                </ul>
+            </div>
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+            <div class="req-card c-red">
+                <div class="req-card-bg-num">02</div>
+                <div class="req-icon-wrap">🪲</div>
+                <h3>Vulnerability Management</h3>
+                <ul>
+                    <li>Active exploit → 24h early warning</li>
+                    <li>Full report required within 72 hours</li>
+                    <li>"Fix it in the next sprint" = illegal</li>
+                    <li>Coordinated disclosure process required</li>
+                </ul>
+            </div>
 
-let particles = [];
+            <div class="req-card c-teal">
+                <div class="req-card-bg-num">03</div>
+                <div class="req-icon-wrap">🔐</div>
+                <h3>Secure by Default</h3>
+                <ul>
+                    <li>Products must ship secure out of the box</li>
+                    <li>Zero weak or default passwords</li>
+                    <li>All security features on by default</li>
+                    <li>No manual hardening required from user</li>
+                </ul>
+            </div>
 
-class Particle {
-    constructor(x,y,color){
-        this.x = x;
-        this.y = y;
-        this.size = Math.random()*6+2;
-        this.speedX = (Math.random()-0.5)*8;
-        this.speedY = (Math.random()-0.5)*8;
-        this.color = color;
-        this.life = 100;
-    }
-    update(){
-        this.x += this.speedX;
-        this.y += this.speedY;
-        this.life--;
-    }
-    draw(){
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = this.life/100;
-        ctx.beginPath();
-        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-        ctx.fill();
-    }
-}
+            <div class="req-card c-amber">
+                <div class="req-card-bg-num">04</div>
+                <div class="req-icon-wrap">⛓️</div>
+                <h3>Dependency Management</h3>
+                <ul>
+                    <li>SBOM required for every dependency</li>
+                    <li>Automated scanning for known risks</li>
+                    <li>Log4j-style incidents are exactly what CRA targets</li>
+                    <li>Know your full supply chain</li>
+                </ul>
+            </div>
 
-function explode(e){
-    for(let i=0;i<80;i++){
-        particles.push(new Particle(
-            window.innerWidth/2,
-            window.innerHeight/2,
-            `hsl(${Math.random()*60+20},100%,60%)`
-        ));
-    }
-}
+            <div class="req-card c-purple">
+                <div class="req-card-bg-num">05</div>
+                <div class="req-icon-wrap">🧪</div>
+                <h3>Risk Assessment</h3>
+                <ul>
+                    <li>Formal threat identification is mandatory</li>
+                    <li>Conducted during design and development</li>
+                    <li>Document all mitigations taken</li>
+                    <li>Risk management is an iterative process</li>
+                </ul>
+            </div>
 
-function animate(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particles.forEach((p,index)=>{
-        p.update();
-        p.draw();
-        if(p.life<=0) particles.splice(index,1);
-    });
-    requestAnimationFrame(animate);
-}
-
-animate();
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRA Campaign Poster - Animated</title>
-
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: radial-gradient(circle at top, #1a1a18, #0d0d0c);
-    padding: 20px;
-    overflow-x: hidden;
-}
-
-/* ANIMATIONS */
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes glow {
-    0%, 100% { opacity: 0.5; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.1); }
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-.poster {
-    max-width: 900px;
-    margin: 0 auto;
-    background: #fff;
-    box-shadow: 0 40px 120px rgba(0,0,0,0.6);
-    animation: fadeUp 1s ease;
-}
-
-/* HERO */
-.hero {
-    background: linear-gradient(135deg, #0d0d0c, #2c2c2a, #1a1a18);
-    background-size: 200% 200%;
-    animation: gradientMove 8s ease infinite;
-    padding: 80px 40px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.hero::before,
-.hero::after {
-    content: "";
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(239,159,39,0.25), transparent 70%);
-    border-radius: 50%;
-    animation: glow 6s infinite ease-in-out;
-}
-
-.hero::before { top: -100px; left: -100px; }
-.hero::after { bottom: -120px; right: -120px; animation-delay: 2s; }
-
-.hero h1 {
-    font-size: 54px;
-    color: white;
-    font-weight: 800;
-    animation: fadeUp 1.2s ease;
-}
-
-.hero h1 .highlight {
-    color: #ef9f27;
-    text-shadow: 0 0 25px rgba(239,159,39,0.6);
-    display: block;
-}
-
-.banner {
-    margin-top: 20px;
-    display: inline-block;
-    padding: 14px 28px;
-    background: #e24b4a;
-    color: white;
-    font-weight: 700;
-    border-radius: 8px;
-    animation: pulse 2s infinite;
-}
-
-/* INTRO */
-.intro {
-    padding: 50px;
-    background: #fafafa;
-    text-align: center;
-    animation: fadeUp 1s ease;
-}
-
-.intro .emphasis {
-    color: #e24b4a;
-    font-weight: 800;
-    font-size: 20px;
-    animation: pulse 3s infinite;
-}
-
-/* GRID */
-.req-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    padding: 40px;
-}
-
-.req-card {
-    padding: 25px;
-    border-radius: 12px;
-    background: #f7f7f7;
-    transition: 0.3s;
-    animation: fadeUp 1s ease forwards;
-}
-
-.req-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-}
-
-/* COLORS */
-.blue { border-left: 6px solid #185fa5; }
-.red { border-left: 6px solid #e24b4a; }
-.teal { border-left: 6px solid #0f6e56; }
-.amber { border-left: 6px solid #ba7517; }
-.purple { border-left: 6px solid #534ab7; }
-.green { border-left: 6px solid #3b6d11; }
-
-/* CTA */
-.cta {
-    padding: 60px;
-    text-align: center;
-    background: #1a1a18;
-    color: white;
-}
-
-.cta button {
-    padding: 18px 40px;
-    background: #ef9f27;
-    border: none;
-    font-weight: 800;
-    cursor: pointer;
-    border-radius: 6px;
-    animation: pulse 2s infinite;
-    transition: 0.3s;
-}
-
-.cta button:hover {
-    transform: scale(1.1);
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-    .req-grid {
-        grid-template-columns: 1fr;
-    }
-    .hero h1 {
-        font-size: 36px;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="poster">
-
-    <div class="hero">
-        <h1>Ship Features.<span class="highlight">Don't Ship Vulnerabilities.</span></h1>
-        <div class="banner">CRA IS NOT OPTIONAL</div>
+            <div class="req-card c-green">
+                <div class="req-card-bg-num">06</div>
+                <div class="req-icon-wrap">📝</div>
+                <h3>Technical Documentation</h3>
+                <ul>
+                    <li>Audit-ready evidence at all times</li>
+                    <li>Design decisions must be logged</li>
+                    <li>Maintained risk register required</li>
+                    <li>CE marking declaration of conformity</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
-    <div class="intro">
-        <p>The Cyber Resilience Act is EU law.</p>
-        <div class="emphasis">NON-COMPLIANCE = NO MARKET ACCESS</div>
+    <!-- ——— PIPELINE / REALITY CHECK ——— -->
+    <div class="pipeline-section">
+        <div class="section-header">
+            <span class="section-number">02 /</span>
+            <span class="section-title">Dev Reality Check</span>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="pipeline-label-row bad">❌ &nbsp;Bad Pipeline — where most teams are today</div>
+        <div class="pipeline-track bad">
+            <div class="pipeline-node">Feature<span class="pipeline-arrow">→</span></div>
+            <div class="pipeline-node">Ship<span class="pipeline-arrow">→</span></div>
+            <div class="pipeline-node">Bug Found<span class="pipeline-arrow">→</span></div>
+            <div class="pipeline-node">Ignore<span class="pipeline-arrow">→</span></div>
+            <div class="pipeline-node">☠ Breach</div>
+        </div>
+
+        <div class="vs-divider"><span>— vs —</span></div>
+
+        <div class="pipeline-label-row good">✓ &nbsp;CRA Pipeline — where you need to be by Dec 2027</div>
+        <div class="pipeline-track good">
+            <div class="pipeline-node">Threat Model<span class="pipeline-arrow">→</span></div>
+            <div class="pipeline-node">Code Secure<span class="pipeline-arrow">→</span></div>
+            <div class="pipeline-node">Test & Scan<span class="pipeline-arrow">→</span></div>
+            <div class="pipeline-node">Ship Safe<span class="pipeline-arrow">→</span></div>
+            <div class="pipeline-node">✓ Monitor</div>
+        </div>
     </div>
 
-    <div class="req-grid">
-
-        <div class="req-card blue">
-            <h3>Security by Design</h3>
-            <p>Think threats before coding.</p>
+    <!-- ——— CONSEQUENCES ——— -->
+    <div class="consequences-section">
+        <div class="section-header">
+            <span class="section-number">03 /</span>
+            <span class="section-title">Stakes</span>
+            <div class="section-line"></div>
         </div>
 
-        <div class="req-card red">
-            <h3>Vulnerability Management</h3>
-            <p>Fix vulnerabilities fast.</p>
-        </div>
+        <div class="consequences-grid">
+            <div class="consequence-panel neg">
+                <div class="consequence-panel-label">If you don't comply</div>
+                <div class="consequence-headline">Banned.<br>Fined.<br>Done.</div>
+                <ul class="consequence-items">
+                    <li><span class="ci-icon">💸</span>Up to €15M or 2.5% of global annual turnover</li>
+                    <li><span class="ci-icon">🚫</span>Products banned from EU market immediately</li>
+                    <li><span class="ci-icon">📉</span>Revenue stream from 450M consumers eliminated</li>
+                    <li><span class="ci-icon">🔥</span>Brand reputation destroyed publicly</li>
+                </ul>
+                <div class="big-penalty">€15M</div>
+            </div>
 
-        <div class="req-card teal">
-            <h3>Secure by Default</h3>
-            <p>No unsafe defaults.</p>
+            <div class="consequence-panel pos">
+                <div class="consequence-panel-label">If you do comply</div>
+                <div class="consequence-headline">Trusted.<br>Selling.<br>Safe.</div>
+                <ul class="consequence-items">
+                    <li><span class="ci-icon">🇪🇺</span>Full, unobstructed EU single market access</li>
+                    <li><span class="ci-icon">🤝</span>Customer and enterprise trust earned</li>
+                    <li><span class="ci-icon">⚡</span>Dramatically faster incident response</li>
+                    <li><span class="ci-icon">🛠</span>Fewer post-launch firefights and hotfixes</li>
+                </ul>
+            </div>
         </div>
-
-        <div class="req-card amber">
-            <h3>Dependencies</h3>
-            <p>Track everything in SBOM.</p>
-        </div>
-
-        <div class="req-card purple">
-            <h3>Risk Analysis</h3>
-            <p>Identify risks early.</p>
-        </div>
-
-        <div class="req-card green">
-            <h3>Documentation</h3>
-            <p>Audit-ready proof required.</p>
-        </div>
-
     </div>
 
-    <div class="cta">
-        <h2>Build Secure. Ship Safe.</h2>
-        <button>Start CRA Checklist</button>
+    <!-- ——— TIMELINE ——— -->
+    <div class="timeline-section">
+        <div class="section-header">
+            <span class="section-number">04 /</span>
+            <span class="section-title">The Clock</span>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="timeline-track">
+            <div class="timeline-line"></div>
+            <div class="timeline-nodes">
+
+                <div class="timeline-node">
+                    <div class="timeline-dot-wrap">
+                        <div class="timeline-dot">NOW</div>
+                    </div>
+                    <div class="timeline-date">Start Today</div>
+                    <div class="timeline-event">Build the practice</div>
+                    <div class="timeline-desc">
+                        Secure-by-design is a culture shift. Begin threat modeling, SBOM generation, and risk registers today. This cannot be crammed in 2027.
+                    </div>
+                </div>
+
+                <div class="timeline-node">
+                    <div class="timeline-dot-wrap">
+                        <div class="timeline-dot">09 /'26</div>
+                    </div>
+                    <div class="timeline-date">Sept 11, 2026</div>
+                    <div class="timeline-event">Reporting obligations live</div>
+                    <div class="timeline-desc">
+                        Vulnerability reporting requirements activate. Active exploits must be reported within 24 hours. Full technical reports within 72 hours.
+                    </div>
+                </div>
+
+                <div class="timeline-node">
+                    <div class="timeline-dot-wrap">
+                        <div class="timeline-dot">WALL</div>
+                    </div>
+                    <div class="timeline-date">Dec 11, 2027</div>
+                    <div class="timeline-event">Full compliance required</div>
+                    <div class="timeline-desc">
+                        All products must be fully compliant. There are no extensions. Non-compliant products cannot be placed on the EU market. This is the wall.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ——— CTA ——— -->
+    <div class="cta-section">
+        <div class="cta-inner">
+            <div>
+                <div class="cta-headline">Build Safe.<br>Sell in Europe.</div>
+                <p class="cta-body">
+                    Your team has until December 2027 to align development practices, secure architectures, and document compliance. That runway is shorter than it sounds. Start now — not after the next sprint.
+                </p>
+            </div>
+            <button class="cta-btn">Start Your CRA Checklist</button>
+        </div>
+    </div>
+
+    <!-- ——— FOOTER ——— -->
+    <div class="footer">
+        <div class="footer-left">
+            CYBER RESILIENCE ACT · EU REGULATION 2024/2847<br>
+            APPLICABLE FROM DECEMBER 11, 2027 · PRINT &amp; POST THIS
+        </div>
+        <div class="footer-right">CRA</div>
     </div>
 
 </div>
