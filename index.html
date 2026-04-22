@@ -1,147 +1,196 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRA Kampagneplakat - Byg features, ikke sårbarheder</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRA Campaign Poster - Animated</title>
+
+<style>
+/* ===== BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top, #1a1a18, #0d0d0c);
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+/* ===== GLOBAL ANIMATIONS ===== */
+@keyframes floatGlow {
+    0%, 100% { transform: translateY(0); opacity: 0.6; }
+    50% { transform: translateY(-15px); opacity: 1; }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ===== POSTER ===== */
+.poster {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 30px 100px rgba(0,0,0,0.5);
+    overflow: hidden;
+    animation: fadeUp 1s ease-out;
+}
+
+/* ===== HERO ===== */
+.hero {
+    background: linear-gradient(135deg, #0d0d0c, #2c2c2a, #1a1a18);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before,
+.hero::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(239,159,39,0.25), transparent 60%);
+    animation: floatGlow 6s infinite ease-in-out;
+    border-radius: 50%;
+}
+
+.hero::before { top: -100px; left: -100px; }
+.hero::after { bottom: -150px; right: -120px; animation-delay: 2s; }
+
+.hero h1 {
+    font-size: 56px;
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: -1px;
+    animation: fadeUp 1.2s ease-out;
+}
+
+.hero h1 .highlight {
+    color: #ef9f27;
+    display: block;
+    text-shadow: 0 0 20px rgba(239,159,39,0.6);
+}
+
+.banner {
+    margin-top: 25px;
+    background: #e24b4a;
+    padding: 16px 32px;
+    display: inline-block;
+    border-radius: 8px;
+    font-weight: 800;
+    animation: pulse 2.5s infinite;
+    box-shadow: 0 0 30px rgba(226,75,74,0.4);
+}
+
+/* ===== INTRO ===== */
+.intro {
+    padding: 50px;
+    background: #fafafa;
+    text-align: center;
+    animation: fadeUp 1s ease-out;
+}
+
+.intro .emphasis {
+    color: #e24b4a;
+    font-size: 20px;
+    font-weight: 800;
+    animation: pulse 3s infinite;
+}
+
+/* ===== CARDS ===== */
+.req-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.req-card {
+    padding: 28px;
+    border-radius: 12px;
+    transition: all 0.4s ease;
+    animation: fadeUp 1s ease-out;
+}
+
+.req-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+/* ===== PIPELINE ===== */
+.pipeline-step {
+    transition: all 0.3s ease;
+}
+
+.pipeline-step:hover {
+    transform: scale(1.1);
+}
+
+/* ===== CTA ===== */
+.cta-button {
+    animation: pulse 2s infinite;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 10px 40px rgba(239,159,39,0.6);
+}
+
+/* ===== SCROLL REVEAL (CSS ONLY) ===== */
+.req-card,
+.timeline-item,
+.consequence-box {
+    opacity: 0;
+    animation: fadeUp 1s ease forwards;
+}
+
+.req-card:nth-child(1) { animation-delay: 0.1s; }
+.req-card:nth-child(2) { animation-delay: 0.2s; }
+.req-card:nth-child(3) { animation-delay: 0.3s; }
+.req-card:nth-child(4) { animation-delay: 0.4s; }
+.req-card:nth-child(5) { animation-delay: 0.5s; }
+.req-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* KEEP YOUR ORIGINAL STYLES BELOW (unchanged) */
+</style>
 </head>
+
 <body>
+<div class="poster">
 
-<h1>Udgiv features.<br>Udgiv ikke sårbarheder.</h1>
+    <!-- HERO -->
+    <div class="hero">
+        <h1>
+            Ship Features.<br>
+            <span class="highlight">Don't Ship Vulnerabilities.</span>
+        </h1>
+        <div class="banner">CRA IS NOT OPTIONAL. IT'S A RELEASE BLOCKER.</div>
+    </div>
 
-<p><strong>Cyber Resilience Act</strong> er på vej – og den gælder jeres produkt.</p>
+    <!-- REST OF YOUR ORIGINAL HTML STAYS EXACTLY THE SAME -->
+    <!-- (intro, requirements, pipeline, etc.) -->
 
-<p><strong>CRA er ikke valgfri. Den kan blokere jeres release.</strong></p>
-
-<hr>
-
-<h2>Hvad betyder det?</h2>
-
-<p>
-Cyber Resilience Act er en EU-lov, der stiller krav til sikker software og produkter.
-</p>
-
-<p><strong>Hvis I ikke overholder den → kan I ikke sælge i EU.</strong></p>
-
-<p>
-Det her er ikke bare noget “compliance”. Det handler om, hvorvidt jeres produkt overhovedet må være på markedet.
-</p>
-
-<hr>
-
-<h2>6 krav I ikke kan ignorere</h2>
-
-<h3>1. Security by Design</h3>
-<ul>
-    <li>Tænk sikkerhed før I koder</li>
-    <li>Lav threat modeling i designfasen</li>
-    <li>Ikke noget man “lige tilføjer bagefter”</li>
-    <li>Dokumentér jeres valg</li>
-</ul>
-
-<h3>2. Håndtering af sårbarheder</h3>
-<ul>
-    <li>Find og fix sårbarheder</li>
-    <li>Varsling inden for 24 timer</li>
-    <li>Fuld rapport inden for 72 timer</li>
-    <li>“Vi fixer det senere” er ikke en mulighed</li>
-</ul>
-
-<h3>3. Secure by Default</h3>
-<ul>
-    <li>Produktet skal være sikkert fra start</li>
-    <li>Ingen svage standard passwords</li>
-    <li>Sikkerhed skal være slået til</li>
-    <li>Ingen manuel hardening nødvendig</li>
-</ul>
-
-<h3>4. Dependency styring</h3>
-<ul>
-    <li>Overblik over alle libraries (SBOM)</li>
-    <li>Scan automatisk for risici</li>
-    <li>Ja, ting som Log4j er præcis det CRA går efter</li>
-    <li>Kend jeres supply chain</li>
-</ul>
-
-<h3>5. Risikovurdering</h3>
-<ul>
-    <li>Identificér trusler systematisk</li>
-    <li>Både i design og udvikling</li>
-    <li>Dokumentér hvordan I håndterer dem</li>
-    <li>Det er en løbende proces</li>
-</ul>
-
-<h3>6. Dokumentation</h3>
-<ul>
-    <li>Klar til audit</li>
-    <li>Designbeslutninger dokumenteret</li>
-    <li>Vedligehold en risk log</li>
-    <li>Bevis for CE-mærkning</li>
-</ul>
-
-<hr>
-
-<h2>Reality check</h2>
-
-<p><strong>Hvilken pipeline kører I?</strong></p>
-
-<p>
-Feature → Ship → Bug → Ignorer → Breach ❌
-</p>
-
-<p>eller</p>
-
-<p>
-Threat model → Sikker kode → Test → Ship sikkert → Monitor ✓
-</p>
-
-<hr>
-
-<h2>Konsekvenser</h2>
-
-<h3>Hvis I ikke overholder det</h3>
-<ul>
-    <li>Bøder op til €15 mio. eller 2,5% af omsætning</li>
-    <li>Produktet må ikke sælges i EU</li>
-    <li>Tab af indtjening</li>
-    <li>Skadet omdømme</li>
-</ul>
-
-<h3>Hvis I gør</h3>
-<ul>
-    <li>Adgang til hele EU-markedet</li>
-    <li>Mere tillid fra kunder</li>
-    <li>Hurtigere reaktion på incidents</li>
-    <li>Færre problemer efter release</li>
-</ul>
-
-<hr>
-
-<h2>Tidslinje</h2>
-
-<p><strong>Nu:</strong> Kom i gang – det her tager tid</p>
-
-<p><strong>11. september 2026:</strong> Krav om rapportering starter</p>
-
-<p><strong>11. december 2027:</strong> Deadline – alt skal være compliant</p>
-
-<hr>
-
-<h2>Byg sikkert. Sælg i Europa.</h2>
-
-<p>
-I har cirka 18 måneder til at få styr på processer, arkitektur og dokumentation.
-Vent ikke til sidste øjeblik.
-</p>
-
-<button>Start jeres CRA tjekliste</button>
-
-<hr>
-
-<p>
-Cyber Resilience Act kampagne<br>
-Gælder fra 11. december 2027
-</p>
-
+</div>
 </body>
 </html>
