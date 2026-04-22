@@ -3,1351 +3,1040 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRA — Hello Kitty Edition 🎀</title>
+    <title>CRA: Ship Features, Not Vulnerabilities</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Barlow+Condensed:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --hk-pink: #FF85A1;
-            --hk-pink-light: #FFB3C6;
-            --hk-pink-pale: #FFE4ED;
-            --hk-pink-deep: #E8336D;
-            --hk-red: #FF3B5C;
-            --hk-white: #FFFBFE;
-            --hk-cream: #FFF5F8;
-            --hk-yellow: #FFE066;
-            --hk-yellow-deep: #FFB800;
-            --hk-mint: #B8F0E0;
-            --hk-mint-deep: #3DBFA0;
-            --hk-lavender: #E0CCFF;
-            --hk-lavender-deep: #9B6DD4;
-            --hk-blue: #B8DCFF;
-            --hk-blue-deep: #4A9EE8;
-            --hk-text: #3D1A2E;
-            --hk-muted: #B87A8A;
-            --hk-border: rgba(255, 133, 161, 0.35);
-            --shadow-pink: 0 8px 32px rgba(255,133,161,0.25);
+            --ink: #0a0a08;
+            --paper: #f0ede6;
+            --amber: #f4a823;
+            --amber-dim: #b87a18;
+            --red: #d93025;
+            --red-bright: #ff3b2e;
+            --green: #1e7a47;
+            --green-bright: #2aab63;
+            --blue: #1351a8;
+            --muted: #7a776e;
+            --light-muted: #c5c2bb;
+            --off-white: #f7f4ee;
+            --card-bg: rgba(255,255,255,0.06);
+            --border: rgba(244,168,35,0.25);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            background: #FFD6E7;
-            background-image:
-                radial-gradient(circle at 10% 20%, #FFB3C6 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, #E0CCFF 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, #FFE4ED 0%, transparent 60%);
+            font-family: 'Barlow Condensed', sans-serif;
+            background: #1a1a16;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
             padding: 40px 20px;
-            cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='28' font-size='28'>🎀</text></svg>"), auto;
-        }
-
-        /* floating kitties background */
-        body::before {
-            content: '🐱 🎀 🐱 🌸 🎀 🐱 🌸 🐱 🎀 🌸 🐱 🎀 🐱 🌸 🎀';
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            font-size: 28px;
-            letter-spacing: 40px;
-            line-height: 80px;
-            color: rgba(255,255,255,0.35);
-            pointer-events: none;
-            z-index: 0;
-            word-break: break-all;
-            padding: 10px;
-            white-space: normal;
         }
 
         .poster {
             width: 100%;
             max-width: 960px;
-            margin: 0 auto;
-            background: var(--hk-white);
-            border-radius: 32px;
-            overflow: hidden;
-            box-shadow:
-                0 0 0 4px var(--hk-pink),
-                0 0 0 8px var(--hk-pink-light),
-                0 30px 80px rgba(232,51,109,0.25);
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ——— HELLO KITTY SVG ——— */
-        /* Inline SVG kitty face used throughout */
-
-        /* ——————————————————————————
-           HERO
-        —————————————————————————— */
-        .hero {
-            background: linear-gradient(160deg, #FF85A1 0%, #FF5C8A 40%, #E8336D 100%);
-            padding: 56px 48px 0;
+            background: var(--ink);
             position: relative;
             overflow: hidden;
-            text-align: center;
         }
 
-        /* polka dot pattern */
-        .hero::before {
+        .poster::before {
             content: '';
-            position: absolute;
+            position: fixed;
             inset: 0;
-            background-image: radial-gradient(circle, rgba(255,255,255,0.15) 2px, transparent 2px);
-            background-size: 32px 32px;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
             pointer-events: none;
+            z-index: 1000;
+            opacity: 0.6;
         }
 
-        .hero-stars {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
+        .hero {
+            position: relative;
+            padding: 0;
             overflow: hidden;
+            background: var(--ink);
+            border-bottom: 1px solid rgba(244,168,35,0.3);
         }
 
-        .star {
+        .hero-bg-grid {
             position: absolute;
-            font-size: 20px;
-            animation: twinkle 2s ease-in-out infinite;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(244,168,35,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(244,168,35,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
         }
 
-        .star:nth-child(1)  { top: 8%;  left: 5%;   animation-delay: 0s; }
-        .star:nth-child(2)  { top: 15%; left: 18%;  animation-delay: 0.3s; }
-        .star:nth-child(3)  { top: 5%;  left: 35%;  animation-delay: 0.6s; }
-        .star:nth-child(4)  { top: 20%; left: 52%;  animation-delay: 0.9s; }
-        .star:nth-child(5)  { top: 8%;  left: 68%;  animation-delay: 0.2s; }
-        .star:nth-child(6)  { top: 18%; left: 82%;  animation-delay: 0.5s; }
-        .star:nth-child(7)  { top: 30%; left: 93%;  animation-delay: 0.8s; }
-        .star:nth-child(8)  { top: 40%; left: 3%;   animation-delay: 0.4s; }
-        .star:nth-child(9)  { top: 55%; left: 8%;   animation-delay: 0.7s; }
-        .star:nth-child(10) { top: 65%; left: 90%;  animation-delay: 0.1s; }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.3); }
+        .hero-scan {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--amber), transparent);
+            animation: scan 4s linear infinite;
+            opacity: 0.6;
         }
 
-        .hero-kitties-row {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            margin-bottom: 24px;
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: -100px; right: -100px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(244,168,35,0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-inner {
             position: relative;
             z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 0;
+            padding: 60px 56px 0;
         }
 
-        /* ——— SVG KITTY COMPONENT ——— */
-        .kitty-svg {
-            width: 80px; height: 80px;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
-            animation: kitty-bounce 1.8s ease-in-out infinite;
+        .hero-eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            color: var(--amber);
+            text-transform: uppercase;
+            margin-bottom: 20px;
         }
 
-        .kitty-svg:nth-child(2) { animation-delay: 0.3s; }
-        .kitty-svg:nth-child(3) { animation-delay: 0.6s; }
-        .kitty-svg:nth-child(4) { animation-delay: 0.9s; }
-        .kitty-svg:nth-child(5) { animation-delay: 1.2s; }
-
-        @keyframes kitty-bounce {
-            0%, 100% { transform: translateY(0px) rotate(-2deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(72px, 10vw, 108px);
+            line-height: 0.92;
+            color: var(--paper);
+            letter-spacing: 0.01em;
+            margin-bottom: 10px;
         }
 
-        .hero-title {
-            font-family: 'Pacifico', cursive;
-            font-size: clamp(36px, 6vw, 64px);
-            color: #fff;
-            line-height: 1.15;
-            text-shadow: 3px 4px 0px rgba(180, 20, 80, 0.35);
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-title .nowrap { white-space: nowrap; }
-        .hero-title .line2 {
+        .hero h1 .line-red {
+            color: var(--red-bright);
             display: block;
-            color: var(--hk-yellow);
-            text-shadow: 3px 4px 0px rgba(180,100,0,0.3);
+            position: relative;
         }
 
-        .hero-tagline {
-            font-size: 18px;
-            color: rgba(255,255,255,0.9);
-            font-weight: 600;
-            margin-bottom: 28px;
-            position: relative;
-            z-index: 2;
+        .hero h1 .line-red::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 3px;
+            color: var(--amber);
+            opacity: 0.3;
+            clip-path: polygon(0 30%, 100% 30%, 100% 55%, 0 55%);
+        }
+
+        .hero-sub {
+            font-size: 16px;
+            font-weight: 300;
+            color: var(--light-muted);
+            letter-spacing: 0.05em;
+            margin-top: 24px;
+            line-height: 1.6;
+            max-width: 440px;
         }
 
         .hero-badge {
+            background: var(--red);
+            color: #fff;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 10px 18px;
             display: inline-block;
-            background: var(--hk-yellow);
-            color: var(--hk-text);
-            font-size: 14px;
-            font-weight: 900;
-            padding: 12px 28px;
-            border-radius: 100px;
-            border: 3px solid rgba(255,255,255,0.6);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-            margin-bottom: 40px;
-            position: relative;
-            z-index: 2;
-            letter-spacing: 0.05em;
+            margin-top: 32px;
         }
 
-        .hero-badge::before { content: '🎀 '; }
-        .hero-badge::after { content: ' 🎀'; }
+        .hero-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(160px, 22vw, 240px);
+            color: rgba(244,168,35,0.06);
+            line-height: 1;
+            align-self: flex-end;
+            user-select: none;
+            letter-spacing: -0.02em;
+        }
 
-        .hero-stats-bar {
+        .hero-bottom-bar {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(8px);
-            border-radius: 20px 20px 0 0;
-            overflow: hidden;
-            position: relative;
-            z-index: 2;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-bottom: none;
+            margin-top: 40px;
+            border-top: 1px solid rgba(244,168,35,0.2);
         }
 
         .hero-stat {
-            padding: 24px 20px;
-            text-align: center;
-            border-right: 1px solid rgba(255,255,255,0.2);
+            padding: 22px 28px;
+            border-right: 1px solid rgba(244,168,35,0.15);
         }
 
         .hero-stat:last-child { border-right: none; }
 
         .hero-stat-num {
-            font-family: 'Pacifico', cursive;
-            font-size: 32px;
-            color: var(--hk-yellow);
-            text-shadow: 2px 2px 0 rgba(180,100,0,0.25);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            color: var(--amber);
             line-height: 1;
         }
 
         .hero-stat-label {
-            font-size: 11px;
-            color: rgba(255,255,255,0.85);
-            margin-top: 6px;
-            font-weight: 700;
-            text-transform: uppercase;
+            font-size: 12px;
+            color: var(--muted);
             letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 4px;
+            font-weight: 400;
         }
 
-        /* ——————————————————————————
-           INTRO STRIP
-        —————————————————————————— */
         .intro-strip {
-            background: var(--hk-pink-deep);
-            padding: 18px 32px;
+            background: var(--amber);
+            padding: 18px 56px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 16px;
-            flex-wrap: wrap;
+            gap: 24px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .intro-strip::after {
+            content: 'CRA  CRA  CRA  CRA  CRA  CRA  CRA  CRA  CRA  CRA';
+            position: absolute;
+            right: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 80px;
+            color: rgba(10,10,8,0.07);
+            white-space: nowrap;
+            letter-spacing: 0.3em;
+            pointer-events: none;
+            line-height: 1;
+            top: 50%; transform: translateY(-50%);
+        }
+
+        .intro-strip-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            color: rgba(10,10,8,0.6);
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .intro-strip-text {
-            font-size: 18px;
-            font-weight: 900;
-            color: #fff;
-            text-align: center;
-            letter-spacing: 0.03em;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--ink);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .intro-strip-text span {
-            color: var(--hk-yellow);
+        .intro-strip-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(10,10,8,0.3);
         }
 
-        /* ——————————————————————————
-           SECTION HEADER
-        —————————————————————————— */
-        .section-wrap {
-            padding: 56px 48px;
-        }
-
-        .section-wrap.alt {
-            background: var(--hk-cream);
-        }
-
-        .section-head {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .section-head-kitty {
-            font-size: 36px;
-            margin-bottom: 8px;
-        }
-
-        .section-head h2 {
-            font-family: 'Pacifico', cursive;
-            font-size: 38px;
-            color: var(--hk-pink-deep);
-            text-shadow: 2px 3px 0 rgba(232,51,109,0.15);
-            margin-bottom: 8px;
-        }
-
-        .section-head p {
-            font-size: 15px;
-            color: var(--hk-muted);
-            font-weight: 600;
-        }
-
-        .section-divider {
+        .section-header {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 40px;
+            align-items: baseline;
+            gap: 20px;
+            margin-bottom: 48px;
         }
 
-        .section-divider::before,
-        .section-divider::after {
-            content: '';
+        .section-number {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: var(--amber);
+            letter-spacing: 0.1em;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            color: var(--paper);
+            letter-spacing: 0.02em;
+            line-height: 1;
+        }
+
+        .section-line {
             flex: 1;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--hk-pink-light));
+            height: 1px;
+            background: rgba(244,168,35,0.2);
         }
 
-        .section-divider::after {
-            background: linear-gradient(90deg, var(--hk-pink-light), transparent);
+        .requirements {
+            padding: 64px 56px;
+            background: var(--ink);
         }
 
-        /* ——————————————————————————
-           REQUIREMENTS GRID
-        —————————————————————————— */
         .req-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 2px;
+            background: rgba(244,168,35,0.1);
+            border: 1px solid rgba(244,168,35,0.1);
         }
 
         .req-card {
-            background: var(--hk-white);
-            border-radius: 24px;
-            padding: 28px 24px;
+            background: #0e0e0b;
+            padding: 32px 28px;
             position: relative;
             overflow: hidden;
-            border: 2.5px solid transparent;
-            box-shadow: 0 4px 20px rgba(255,133,161,0.12);
-            transition: transform 0.25s, box-shadow 0.25s;
-        }
-
-        .req-card:hover {
-            transform: translateY(-6px) rotate(-0.5deg);
-            box-shadow: 0 16px 40px rgba(255,133,161,0.25);
+            transition: background 0.3s;
         }
 
         .req-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 6px;
-            border-radius: 24px 24px 0 0;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
         }
 
-        .req-card .card-kitty {
+        .req-card:hover {
+            background: #141410;
+        }
+
+        .req-card:hover .req-card-bg-num {
+            opacity: 0.06;
+            transform: translate(-10px, -10px);
+        }
+
+        .req-card-bg-num {
             position: absolute;
-            bottom: -8px; right: -8px;
-            font-size: 48px;
-            opacity: 0.12;
-            transform: rotate(15deg);
+            bottom: -20px; right: -10px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 110px;
+            color: var(--paper);
+            opacity: 0.03;
+            line-height: 1;
+            transition: all 0.4s;
+            user-select: none;
             pointer-events: none;
         }
 
-        .rc-blue   { border-color: #B8DCFF; }
-        .rc-blue::before { background: var(--hk-blue-deep); }
-        .rc-red    { border-color: #FFB3C6; }
-        .rc-red::before { background: var(--hk-pink-deep); }
-        .rc-teal   { border-color: #B8F0E0; }
-        .rc-teal::before { background: var(--hk-mint-deep); }
-        .rc-yellow { border-color: #FFE066; }
-        .rc-yellow::before { background: var(--hk-yellow-deep); }
-        .rc-lav    { border-color: #E0CCFF; }
-        .rc-lav::before { background: var(--hk-lavender-deep); }
-        .rc-green  { border-color: #B8F0E0; }
-        .rc-green::before { background: #2ECC71; }
+        .req-card.c-blue::before { background: #2f80ed; }
+        .req-card.c-red::before { background: var(--red-bright); }
+        .req-card.c-teal::before { background: #1abc9c; }
+        .req-card.c-amber::before { background: var(--amber); }
+        .req-card.c-purple::before { background: #9b59b6; }
+        .req-card.c-green::before { background: var(--green-bright); }
 
-        .req-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
-            display: block;
+        .req-icon-wrap {
+            width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 20px;
         }
 
+        .c-blue .req-icon-wrap { background: rgba(47,128,237,0.12); }
+        .c-red .req-icon-wrap { background: rgba(255,59,46,0.12); }
+        .c-teal .req-icon-wrap { background: rgba(26,188,156,0.12); }
+        .c-amber .req-icon-wrap { background: rgba(244,168,35,0.12); }
+        .c-purple .req-icon-wrap { background: rgba(155,89,182,0.12); }
+        .c-green .req-icon-wrap { background: rgba(42,171,99,0.12); }
+
         .req-card h3 {
-            font-size: 15px;
-            font-weight: 900;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 14px;
+            letter-spacing: 0.1em;
+            margin-bottom: 18px;
             line-height: 1.2;
         }
 
-        .rc-blue h3   { color: var(--hk-blue-deep); }
-        .rc-red h3    { color: var(--hk-pink-deep); }
-        .rc-teal h3   { color: var(--hk-mint-deep); }
-        .rc-yellow h3 { color: #D4890A; }
-        .rc-lav h3    { color: var(--hk-lavender-deep); }
-        .rc-green h3  { color: #1A9E4A; }
+        .c-blue h3 { color: #5ba0f5; }
+        .c-red h3 { color: #ff6b63; }
+        .c-teal h3 { color: #4ecdc4; }
+        .c-amber h3 { color: var(--amber); }
+        .c-purple h3 { color: #c39bd3; }
+        .c-green h3 { color: #52d98a; }
 
-        .req-card ul { list-style: none; }
-
-        .req-card li {
-            font-size: 13px;
-            color: #6B4D58;
-            padding: 5px 0 5px 20px;
-            position: relative;
-            line-height: 1.5;
-            font-weight: 600;
-        }
-
-        .req-card li::before {
-            content: '♡';
-            position: absolute;
-            left: 0;
-            font-size: 11px;
-            top: 6px;
-        }
-
-        .rc-blue li::before   { color: var(--hk-blue-deep); }
-        .rc-red li::before    { color: var(--hk-pink-deep); }
-        .rc-teal li::before   { color: var(--hk-mint-deep); }
-        .rc-yellow li::before { color: var(--hk-yellow-deep); }
-        .rc-lav li::before    { color: var(--hk-lavender-deep); }
-        .rc-green li::before  { color: #1A9E4A; }
-
-        /* ——————————————————————————
-           KITTY ROW DECORATIVE
-        —————————————————————————— */
-        .kitty-parade {
-            background: var(--hk-pink-pale);
-            padding: 20px 0;
-            display: flex;
-            justify-content: center;
-            gap: 0;
-            overflow: hidden;
-            border-top: 3px dashed var(--hk-pink-light);
-            border-bottom: 3px dashed var(--hk-pink-light);
-            position: relative;
-        }
-
-        .kitty-parade-inner {
-            display: flex;
-            gap: 20px;
-            animation: parade 20s linear infinite;
-            white-space: nowrap;
-        }
-
-        @keyframes parade {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        .kitty-parade svg {
-            width: 56px; height: 56px;
-            flex-shrink: 0;
-        }
-
-        /* ——————————————————————————
-           PIPELINE
-        —————————————————————————— */
-        .pipeline-block {
-            margin-bottom: 36px;
-        }
-
-        .pipeline-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-            font-size: 14px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .pipeline-title.bad { color: var(--hk-red); }
-        .pipeline-title.good { color: var(--hk-mint-deep); }
-
-        .pipeline-title .pt-bubble {
-            padding: 4px 14px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .bad .pt-bubble { background: #FFE4ED; color: var(--hk-red); border: 2px solid #FFB3C6; }
-        .good .pt-bubble { background: #E0FFF5; color: var(--hk-mint-deep); border: 2px solid var(--hk-mint); }
-
-        .pipeline-nodes {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-        }
-
-        .p-node {
-            padding: 16px 10px;
-            text-align: center;
-            border-radius: 16px;
-            font-size: 13px;
-            font-weight: 800;
-            position: relative;
-        }
-
-        .pipeline-nodes.bad .p-node {
-            background: #FFE4ED;
-            color: var(--hk-red);
-            border: 2px solid #FFB3C6;
-        }
-
-        .pipeline-nodes.bad .p-node:last-child {
-            background: var(--hk-red);
-            color: #fff;
-        }
-
-        .pipeline-nodes.good .p-node {
-            background: #E0FFF5;
-            color: var(--hk-mint-deep);
-            border: 2px solid var(--hk-mint);
-        }
-
-        .pipeline-nodes.good .p-node:last-child {
-            background: var(--hk-mint-deep);
-            color: #fff;
-        }
-
-        .p-node-arrow {
-            position: absolute;
-            right: -12px;
-            top: 50%; transform: translateY(-50%);
-            font-size: 16px;
-            z-index: 2;
-        }
-
-        .pipeline-nodes.bad .p-node-arrow { color: #FFB3C6; }
-        .pipeline-nodes.good .p-node-arrow { color: var(--hk-mint); }
-
-        .p-node:last-child .p-node-arrow { display: none; }
-
-        .vs-row {
-            text-align: center;
-            margin: 20px 0;
-            font-family: 'Pacifico', cursive;
-            font-size: 22px;
-            color: var(--hk-pink);
-        }
-
-        /* ——————————————————————————
-           CONSEQUENCES
-        —————————————————————————— */
-        .consequences-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
-        .con-panel {
-            border-radius: 28px;
-            padding: 36px 32px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .con-panel.neg {
-            background: linear-gradient(145deg, #FFE4ED, #FFB3C6);
-            border: 3px solid #FF85A1;
-        }
-
-        .con-panel.pos {
-            background: linear-gradient(145deg, #E0FFF5, #B8F0E0);
-            border: 3px solid var(--hk-mint-deep);
-        }
-
-        .con-panel-kitty {
-            font-size: 56px;
-            text-align: center;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .con-panel-title {
-            font-family: 'Pacifico', cursive;
-            font-size: 28px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .neg .con-panel-title { color: var(--hk-red); }
-        .pos .con-panel-title { color: var(--hk-mint-deep); }
-
-        .con-items { list-style: none; }
-
-        .con-items li {
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-            padding: 10px 0;
-            font-size: 14px;
-            font-weight: 700;
-            border-bottom: 1px dashed rgba(255,133,161,0.3);
-            line-height: 1.4;
-        }
-
-        .pos .con-items li { border-color: rgba(61,191,160,0.25); }
-        .con-items li:last-child { border-bottom: none; }
-
-        .neg .con-items li { color: #8B2040; }
-        .pos .con-items li { color: #0A5E45; }
-
-        .con-icon { font-size: 18px; flex-shrink: 0; }
-
-        .big-kitty-bg {
-            position: absolute;
-            bottom: -20px; right: -20px;
-            font-size: 120px;
-            opacity: 0.08;
-            transform: rotate(15deg);
-            pointer-events: none;
-            line-height: 1;
-        }
-
-        /* ——————————————————————————
-           TIMELINE
-        —————————————————————————— */
-        .timeline-nodes {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            position: relative;
-        }
-
-        .timeline-nodes::before {
-            content: '';
-            position: absolute;
-            top: 68px;
-            left: 16.6%; right: 16.6%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--hk-pink-light), var(--hk-pink), var(--hk-red));
-            border-radius: 3px;
-            z-index: 0;
-        }
-
-        .tl-node {
-            text-align: center;
+        .req-card ul {
+            list-style: none;
             position: relative;
             z-index: 1;
         }
 
-        .tl-dot {
-            width: 60px; height: 60px;
+        .req-card li {
+            font-size: 13px;
+            color: var(--light-muted);
+            padding: 6px 0 6px 0;
+            position: relative;
+            line-height: 1.5;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        .pipeline-section {
+            background: #070706;
+            padding: 64px 56px;
+            border-top: 1px solid rgba(244,168,35,0.12);
+            border-bottom: 1px solid rgba(244,168,35,0.12);
+        }
+
+        .pipeline-label-row {
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pipeline-label-row.bad { color: #ff6b63; }
+        .pipeline-label-row.good { color: #52d98a; }
+
+        .pipeline-label-row::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: currentColor;
+            opacity: 0.2;
+        }
+
+        .pipeline-track {
+            display: grid;
+            gap: 3px;
+            margin-bottom: 48px;
+        }
+
+        .pipeline-track.bad { grid-template-columns: repeat(5, 1fr); }
+        .pipeline-track.good { grid-template-columns: repeat(5, 1fr); }
+
+        .pipeline-node {
+            padding: 18px 12px;
+            text-align: center;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            position: relative;
+        }
+
+        .pipeline-track.bad .pipeline-node {
+            background: rgba(217,48,37,0.12);
+            color: #ff6b63;
+            border: 1px solid rgba(217,48,37,0.25);
+        }
+
+        .pipeline-track.good .pipeline-node {
+            background: rgba(30,122,71,0.12);
+            color: #52d98a;
+            border: 1px solid rgba(42,171,99,0.25);
+        }
+
+        .pipeline-node:last-child .pipeline-arrow { display: none; }
+
+        .pipeline-track.bad .pipeline-node:last-child {
+            background: rgba(217,48,37,0.3);
+            font-weight: 900;
+        }
+
+        .pipeline-track.good .pipeline-node:last-child {
+            background: rgba(42,171,99,0.25);
+            font-weight: 900;
+        }
+
+        .vs-divider {
+            text-align: center;
+            margin: 0 0 32px;
+        }
+
+        .vs-divider span {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            color: rgba(244,168,35,0.3);
+            letter-spacing: 0.2em;
+        }
+
+        .consequences-section {
+            padding: 64px 56px;
+            background: var(--ink);
+        }
+
+        .consequences-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+        }
+
+        .consequence-panel {
+            padding: 48px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .consequence-panel.neg {
+            background: #140a0a;
+            border: 1px solid rgba(217,48,37,0.2);
+        }
+
+        .consequence-panel.pos {
+            background: #0a1410;
+            border: 1px solid rgba(30,122,71,0.2);
+        }
+
+        .consequence-panel-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .neg .consequence-panel-label { color: #ff6b63; }
+        .pos .consequence-panel-label { color: #52d98a; }
+
+        .consequence-panel-label::before {
+            content: '';
+            display: inline-block;
+            width: 8px; height: 8px;
+            border-radius: 50%;
+        }
+
+        .neg .consequence-panel-label::before { background: var(--red-bright); }
+        .pos .consequence-panel-label::before { background: var(--green-bright); }
+
+        .consequence-headline {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 52px;
+            line-height: 0.95;
+            margin-bottom: 32px;
+            letter-spacing: 0.01em;
+        }
+
+        .neg .consequence-headline { color: #ff6b63; }
+        .pos .consequence-headline { color: #52d98a; }
+
+        .consequence-items {
+            list-style: none;
+        }
+
+        .consequence-items li {
+            font-size: 15px;
+            font-weight: 300;
+            color: var(--light-muted);
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            letter-spacing: 0.03em;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .consequence-items li:last-child { border-bottom: none; }
+
+        .ci-icon {
+            font-size: 14px;
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .big-penalty {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 72px;
+            color: rgba(217,48,37,0.12);
+            position: absolute;
+            bottom: -10px; right: 20px;
+            line-height: 1;
+            pointer-events: none;
+            letter-spacing: -0.02em;
+        }
+
+        .timeline-section {
+            padding: 64px 56px;
+            background: #070706;
+            border-top: 1px solid rgba(244,168,35,0.12);
+        }
+
+        .timeline-track {
+            position: relative;
+            padding-top: 24px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 48px;
+            left: 28px; right: 28px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(244,168,35,0.1), rgba(244,168,35,0.5), var(--red));
+        }
+
+        .timeline-nodes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .timeline-node {
+            text-align: center;
+            position: relative;
+        }
+
+        .timeline-dot-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .timeline-dot {
+            width: 48px; height: 48px;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 26px;
-            box-shadow: 0 4px 16px rgba(255,133,161,0.3);
-            border: 3px solid rgba(255,255,255,0.8);
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
         }
 
-        .tl-node:nth-child(1) .tl-dot { background: var(--hk-pink-light); }
-        .tl-node:nth-child(2) .tl-dot { background: var(--hk-yellow); }
-        .tl-node:nth-child(3) .tl-dot {
-            background: var(--hk-red);
-            animation: tl-pulse 2s ease-in-out infinite;
+        .timeline-node:nth-child(1) .timeline-dot {
+            background: rgba(244,168,35,0.15);
+            border: 2px solid var(--amber);
+            color: var(--amber);
         }
 
-        @keyframes tl-pulse {
-            0%, 100% { box-shadow: 0 4px 16px rgba(255,59,92,0.35); }
-            50% { box-shadow: 0 4px 32px rgba(255,59,92,0.7); }
+        .timeline-node:nth-child(2) .timeline-dot {
+            background: rgba(244,168,35,0.25);
+            border: 2px solid var(--amber);
+            color: var(--amber);
         }
 
-        .tl-date {
-            font-family: 'Pacifico', cursive;
-            font-size: 22px;
-            margin-bottom: 8px;
+        .timeline-node:nth-child(3) .timeline-dot {
+            background: rgba(217,48,37,0.2);
+            border: 2px solid var(--red-bright);
+            color: var(--red-bright);
+            box-shadow: 0 0 20px rgba(217,48,37,0.3);
+            animation: pulse-red 2s ease-in-out infinite;
         }
 
-        .tl-node:nth-child(1) .tl-date { color: var(--hk-pink-deep); }
-        .tl-node:nth-child(2) .tl-date { color: #D4890A; }
-        .tl-node:nth-child(3) .tl-date { color: var(--hk-red); }
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 20px rgba(217,48,37,0.3); }
+            50% { box-shadow: 0 0 36px rgba(217,48,37,0.6); }
+        }
 
-        .tl-event {
+        .timeline-date {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 30px;
+            letter-spacing: 0.03em;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .timeline-node:nth-child(1) .timeline-date { color: var(--paper); }
+        .timeline-node:nth-child(2) .timeline-date { color: var(--amber); }
+        .timeline-node:nth-child(3) .timeline-date { color: var(--red-bright); }
+
+        .timeline-event {
             font-size: 14px;
-            font-weight: 900;
-            color: var(--hk-text);
-            margin-bottom: 8px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.1em;
+            color: var(--paper);
+            margin-bottom: 12px;
         }
 
-        .tl-desc {
+        .timeline-desc {
             font-size: 13px;
-            color: var(--hk-muted);
+            color: var(--muted);
             line-height: 1.6;
-            font-weight: 600;
+            font-weight: 300;
+            letter-spacing: 0.02em;
         }
 
-        /* ——————————————————————————
-           CTA
-        —————————————————————————— */
         .cta-section {
-            background: linear-gradient(145deg, var(--hk-pink-deep) 0%, #C2185B 100%);
-            padding: 64px 48px;
-            text-align: center;
+            background: var(--amber);
+            padding: 64px 56px;
             position: relative;
             overflow: hidden;
         }
 
         .cta-section::before {
-            content: '';
+            content: 'GO';
             position: absolute;
-            inset: 0;
-            background-image: radial-gradient(circle, rgba(255,255,255,0.1) 2px, transparent 2px);
-            background-size: 28px 28px;
+            right: -30px; top: -30px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 360px;
+            color: rgba(10,10,8,0.06);
+            line-height: 1;
             pointer-events: none;
+            letter-spacing: -0.02em;
         }
 
-        .cta-kitties {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 28px;
+        .cta-inner {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 48px;
             position: relative;
             z-index: 1;
-        }
-
-        .cta-kitties svg {
-            width: 64px; height: 64px;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2));
-            animation: cta-kitty-dance 1.5s ease-in-out infinite;
-        }
-
-        .cta-kitties svg:nth-child(2) { animation-delay: 0.2s; }
-        .cta-kitties svg:nth-child(3) { animation-delay: 0.4s; }
-        .cta-kitties svg:nth-child(4) { animation-delay: 0.6s; }
-        .cta-kitties svg:nth-child(5) { animation-delay: 0.8s; }
-
-        @keyframes cta-kitty-dance {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-12px) scale(1.05); }
         }
 
         .cta-headline {
-            font-family: 'Pacifico', cursive;
-            font-size: clamp(32px, 5vw, 54px);
-            color: #fff;
-            text-shadow: 3px 4px 0 rgba(100,0,50,0.25);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 64px;
+            color: var(--ink);
+            line-height: 0.95;
+            letter-spacing: 0.01em;
             margin-bottom: 16px;
-            position: relative;
-            z-index: 1;
         }
 
         .cta-body {
             font-size: 16px;
-            color: rgba(255,255,255,0.88);
-            max-width: 520px;
-            margin: 0 auto 36px;
-            line-height: 1.7;
-            font-weight: 600;
-            position: relative;
-            z-index: 1;
+            color: rgba(10,10,8,0.65);
+            line-height: 1.6;
+            font-weight: 400;
+            max-width: 480px;
+            letter-spacing: 0.02em;
         }
 
         .cta-btn {
-            display: inline-block;
-            background: var(--hk-yellow);
-            color: var(--hk-text);
-            font-family: 'Nunito', sans-serif;
-            font-size: 18px;
-            font-weight: 900;
-            padding: 18px 48px;
-            border-radius: 100px;
-            border: 3px solid rgba(255,255,255,0.6);
+            background: var(--ink);
+            color: var(--amber);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            padding: 20px 40px;
+            border: none;
             cursor: pointer;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.2);
-            transition: all 0.2s;
-            letter-spacing: 0.04em;
+            white-space: nowrap;
             position: relative;
-            z-index: 1;
+            transition: all 0.2s;
         }
 
         .cta-btn:hover {
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 14px 36px rgba(0,0,0,0.25);
+            background: #1a1a14;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(10,10,8,0.25);
         }
 
-        .cta-btn::before { content: '🎀 '; }
-        .cta-btn::after { content: ' 🐱'; }
-
-        /* ——————————————————————————
-           FOOTER
-        —————————————————————————— */
         .footer {
-            background: var(--hk-pink-pale);
-            padding: 24px 48px;
+            background: #050504;
+            padding: 28px 56px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            border-top: 3px dashed var(--hk-pink-light);
-            flex-wrap: wrap;
-            gap: 12px;
+            align-items: center;
+            border-top: 1px solid rgba(244,168,35,0.15);
         }
 
         .footer-left {
-            font-size: 12px;
-            color: var(--hk-muted);
-            font-weight: 700;
-            letter-spacing: 0.06em;
+            font-family: 'DM Mono', monospace;
+            font-size: 10px;
+            color: rgba(122,119,110,0.7);
+            letter-spacing: 0.12em;
             line-height: 1.7;
         }
 
         .footer-right {
-            font-family: 'Pacifico', cursive;
-            font-size: 22px;
-            color: var(--hk-pink);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: rgba(244,168,35,0.2);
+            letter-spacing: 0.08em;
         }
 
-        /* ——————————————————————————
-           RESPONSIVE
-        —————————————————————————— */
         @media (max-width: 768px) {
+            .hero-inner { grid-template-columns: 1fr; padding: 40px 32px 0; }
+            .hero-number { display: none; }
+            .hero-bottom-bar { grid-template-columns: 1fr; }
+            .hero-stat { border-right: none; border-bottom: 1px solid rgba(244,168,35,0.15); }
             .req-grid { grid-template-columns: 1fr; }
             .consequences-grid { grid-template-columns: 1fr; }
+            .cta-inner { grid-template-columns: 1fr; }
             .timeline-nodes { grid-template-columns: 1fr; }
-            .timeline-nodes::before { display: none; }
-            .pipeline-nodes { grid-template-columns: 1fr; }
-            .p-node-arrow { display: none; }
-            .hero { padding: 40px 24px 0; }
-            .section-wrap { padding: 40px 24px; }
-            .cta-section { padding: 48px 24px; }
-            .footer { padding: 20px 24px; }
-            .hero-kitties-row .kitty-svg:nth-child(n+4) { display: none; }
+            .timeline-line { display: none; }
+            .hero h1 { font-size: 56px; }
+            .requirements, .pipeline-section, .consequences-section, .timeline-section, .cta-section, .footer {
+                padding-left: 32px; padding-right: 32px;
+            }
+            .intro-strip { padding: 14px 32px; flex-wrap: wrap; gap: 12px; }
+            .pipeline-track.bad, .pipeline-track.good { grid-template-columns: 1fr; gap: 2px; }
         }
 
         @media print {
-            body { background: white; padding: 0; }
-            .poster { border-radius: 0; box-shadow: none; }
-            .kitty-parade-inner { animation: none; }
-            .kitty-svg, .cta-kitties svg { animation: none; }
+            body { padding: 0; background: white; }
+            .poster { max-width: 100%; box-shadow: none; }
+            .hero-scan { display: none; }
         }
     </style>
 </head>
 <body>
 
-<!-- HELLO KITTY SVG DEFINITION (reusable inline) -->
-<svg width="0" height="0" style="position:absolute">
-  <defs>
-    <!-- White kitty -->
-    <symbol id="kitty-white" viewBox="0 0 100 100">
-      <!-- ears -->
-      <polygon points="15,38 28,12 40,38" fill="#fff" stroke="#222" stroke-width="2.5"/>
-      <polygon points="18,36 28,18 38,36" fill="#FFB3C6"/>
-      <polygon points="60,38 72,12 85,38" fill="#fff" stroke="#222" stroke-width="2.5"/>
-      <polygon points="63,36 72,18 82,36" fill="#FFB3C6"/>
-      <!-- head -->
-      <ellipse cx="50" cy="58" rx="36" ry="34" fill="#fff" stroke="#222" stroke-width="2.5"/>
-      <!-- eyes -->
-      <ellipse cx="38" cy="52" rx="5" ry="5.5" fill="#222"/>
-      <ellipse cx="62" cy="52" rx="5" ry="5.5" fill="#222"/>
-      <circle cx="40" cy="50" r="1.8" fill="#fff"/>
-      <circle cx="64" cy="50" r="1.8" fill="#fff"/>
-      <!-- nose -->
-      <ellipse cx="50" cy="63" rx="3" ry="2" fill="#FF85A1"/>
-      <!-- mouth -->
-      <path d="M 44 67 Q 50 72 56 67" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
-      <!-- whiskers -->
-      <line x1="12" y1="60" x2="38" y2="63" stroke="#222" stroke-width="1.5" opacity="0.5"/>
-      <line x1="12" y1="66" x2="38" y2="65" stroke="#222" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="63" x2="88" y2="60" stroke="#222" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="65" x2="88" y2="66" stroke="#222" stroke-width="1.5" opacity="0.5"/>
-      <!-- bow -->
-      <polygon points="52,30 62,24 66,33 52,33" fill="#FF3B5C"/>
-      <polygon points="52,30 42,24 38,33 52,33" fill="#FF3B5C"/>
-      <circle cx="52" cy="31" r="5" fill="#FF6B8A"/>
-    </symbol>
-
-    <!-- Pink kitty -->
-    <symbol id="kitty-pink" viewBox="0 0 100 100">
-      <polygon points="15,38 28,12 40,38" fill="#FFB3C6" stroke="#d45c7a" stroke-width="2.5"/>
-      <polygon points="18,36 28,18 38,36" fill="#FF85A1"/>
-      <polygon points="60,38 72,12 85,38" fill="#FFB3C6" stroke="#d45c7a" stroke-width="2.5"/>
-      <polygon points="63,36 72,18 82,36" fill="#FF85A1"/>
-      <ellipse cx="50" cy="58" rx="36" ry="34" fill="#FFD6E7" stroke="#d45c7a" stroke-width="2.5"/>
-      <ellipse cx="38" cy="52" rx="5" ry="5.5" fill="#3D1A2E"/>
-      <ellipse cx="62" cy="52" rx="5" ry="5.5" fill="#3D1A2E"/>
-      <circle cx="40" cy="50" r="1.8" fill="#fff"/>
-      <circle cx="64" cy="50" r="1.8" fill="#fff"/>
-      <ellipse cx="50" cy="63" rx="3" ry="2" fill="#E8336D"/>
-      <path d="M 44 67 Q 50 72 56 67" fill="none" stroke="#3D1A2E" stroke-width="2" stroke-linecap="round"/>
-      <line x1="12" y1="60" x2="38" y2="63" stroke="#d45c7a" stroke-width="1.5" opacity="0.5"/>
-      <line x1="12" y1="66" x2="38" y2="65" stroke="#d45c7a" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="63" x2="88" y2="60" stroke="#d45c7a" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="65" x2="88" y2="66" stroke="#d45c7a" stroke-width="1.5" opacity="0.5"/>
-      <polygon points="52,30 62,24 66,33 52,33" fill="#FFE066"/>
-      <polygon points="52,30 42,24 38,33 52,33" fill="#FFE066"/>
-      <circle cx="52" cy="31" r="5" fill="#FFB800"/>
-    </symbol>
-
-    <!-- Blue kitty -->
-    <symbol id="kitty-blue" viewBox="0 0 100 100">
-      <polygon points="15,38 28,12 40,38" fill="#B8DCFF" stroke="#4A9EE8" stroke-width="2.5"/>
-      <polygon points="18,36 28,18 38,36" fill="#7FC4FF"/>
-      <polygon points="60,38 72,12 85,38" fill="#B8DCFF" stroke="#4A9EE8" stroke-width="2.5"/>
-      <polygon points="63,36 72,18 82,36" fill="#7FC4FF"/>
-      <ellipse cx="50" cy="58" rx="36" ry="34" fill="#E6F3FF" stroke="#4A9EE8" stroke-width="2.5"/>
-      <ellipse cx="38" cy="52" rx="5" ry="5.5" fill="#3D1A2E"/>
-      <ellipse cx="62" cy="52" rx="5" ry="5.5" fill="#3D1A2E"/>
-      <circle cx="40" cy="50" r="1.8" fill="#fff"/>
-      <circle cx="64" cy="50" r="1.8" fill="#fff"/>
-      <ellipse cx="50" cy="63" rx="3" ry="2" fill="#FF85A1"/>
-      <path d="M 44 67 Q 50 72 56 67" fill="none" stroke="#3D1A2E" stroke-width="2" stroke-linecap="round"/>
-      <line x1="12" y1="60" x2="38" y2="63" stroke="#4A9EE8" stroke-width="1.5" opacity="0.5"/>
-      <line x1="12" y1="66" x2="38" y2="65" stroke="#4A9EE8" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="63" x2="88" y2="60" stroke="#4A9EE8" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="65" x2="88" y2="66" stroke="#4A9EE8" stroke-width="1.5" opacity="0.5"/>
-      <polygon points="52,30 62,24 66,33 52,33" fill="#E8336D"/>
-      <polygon points="52,30 42,24 38,33 52,33" fill="#E8336D"/>
-      <circle cx="52" cy="31" r="5" fill="#FF85A1"/>
-    </symbol>
-
-    <!-- Mint kitty -->
-    <symbol id="kitty-mint" viewBox="0 0 100 100">
-      <polygon points="15,38 28,12 40,38" fill="#B8F0E0" stroke="#3DBFA0" stroke-width="2.5"/>
-      <polygon points="18,36 28,18 38,36" fill="#7FE0CC"/>
-      <polygon points="60,38 72,12 85,38" fill="#B8F0E0" stroke="#3DBFA0" stroke-width="2.5"/>
-      <polygon points="63,36 72,18 82,36" fill="#7FE0CC"/>
-      <ellipse cx="50" cy="58" rx="36" ry="34" fill="#E6FFF8" stroke="#3DBFA0" stroke-width="2.5"/>
-      <ellipse cx="38" cy="52" rx="5" ry="5.5" fill="#3D1A2E"/>
-      <ellipse cx="62" cy="52" rx="5" ry="5.5" fill="#3D1A2E"/>
-      <circle cx="40" cy="50" r="1.8" fill="#fff"/>
-      <circle cx="64" cy="50" r="1.8" fill="#fff"/>
-      <ellipse cx="50" cy="63" rx="3" ry="2" fill="#FF85A1"/>
-      <path d="M 44 67 Q 50 72 56 67" fill="none" stroke="#3D1A2E" stroke-width="2" stroke-linecap="round"/>
-      <line x1="12" y1="60" x2="38" y2="63" stroke="#3DBFA0" stroke-width="1.5" opacity="0.5"/>
-      <line x1="12" y1="66" x2="38" y2="65" stroke="#3DBFA0" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="63" x2="88" y2="60" stroke="#3DBFA0" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="65" x2="88" y2="66" stroke="#3DBFA0" stroke-width="1.5" opacity="0.5"/>
-      <polygon points="52,30 62,24 66,33 52,33" fill="#FF85A1"/>
-      <polygon points="52,30 42,24 38,33 52,33" fill="#FF85A1"/>
-      <circle cx="52" cy="31" r="5" fill="#FF3B5C"/>
-    </symbol>
-
-    <!-- Yellow kitty -->
-    <symbol id="kitty-yellow" viewBox="0 0 100 100">
-      <polygon points="15,38 28,12 40,38" fill="#FFE066" stroke="#D4890A" stroke-width="2.5"/>
-      <polygon points="18,36 28,18 38,36" fill="#FFD040"/>
-      <polygon points="60,38 72,12 85,38" fill="#FFE066" stroke="#D4890A" stroke-width="2.5"/>
-      <polygon points="63,36 72,18 82,36" fill="#FFD040"/>
-      <ellipse cx="50" cy="58" rx="36" ry="34" fill="#FFFBDC" stroke="#D4890A" stroke-width="2.5"/>
-      <ellipse cx="38" cy="52" rx="5" ry="5.5" fill="#3D1A2E"/>
-      <ellipse cx="62" cy="52" rx="5" ry="5.5" fill="#3D1A2E"/>
-      <circle cx="40" cy="50" r="1.8" fill="#fff"/>
-      <circle cx="64" cy="50" r="1.8" fill="#fff"/>
-      <ellipse cx="50" cy="63" rx="3" ry="2" fill="#FF85A1"/>
-      <path d="M 44 67 Q 50 72 56 67" fill="none" stroke="#3D1A2E" stroke-width="2" stroke-linecap="round"/>
-      <line x1="12" y1="60" x2="38" y2="63" stroke="#D4890A" stroke-width="1.5" opacity="0.5"/>
-      <line x1="12" y1="66" x2="38" y2="65" stroke="#D4890A" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="63" x2="88" y2="60" stroke="#D4890A" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="65" x2="88" y2="66" stroke="#D4890A" stroke-width="1.5" opacity="0.5"/>
-      <polygon points="52,30 62,24 66,33 52,33" fill="#E8336D"/>
-      <polygon points="52,30 42,24 38,33 52,33" fill="#E8336D"/>
-      <circle cx="52" cy="31" r="5" fill="#FF85A1"/>
-    </symbol>
-
-    <!-- Lavender kitty -->
-    <symbol id="kitty-lav" viewBox="0 0 100 100">
-      <polygon points="15,38 28,12 40,38" fill="#E0CCFF" stroke="#9B6DD4" stroke-width="2.5"/>
-      <polygon points="18,36 28,18 38,36" fill="#C8AAFF"/>
-      <polygon points="60,38 72,12 85,38" fill="#E0CCFF" stroke="#9B6DD4" stroke-width="2.5"/>
-      <polygon points="63,36 72,18 82,36" fill="#C8AAFF"/>
-      <ellipse cx="50" cy="58" rx="36" ry="34" fill="#F2EAFF" stroke="#9B6DD4" stroke-width="2.5"/>
-      <ellipse cx="38" cy="52" rx="5" ry="5.5" fill="#3D1A2E"/>
-      <ellipse cx="62" cy="52" rx="5" ry="5.5" fill="#3D1A2E"/>
-      <circle cx="40" cy="50" r="1.8" fill="#fff"/>
-      <circle cx="64" cy="50" r="1.8" fill="#fff"/>
-      <ellipse cx="50" cy="63" rx="3" ry="2" fill="#FF85A1"/>
-      <path d="M 44 67 Q 50 72 56 67" fill="none" stroke="#3D1A2E" stroke-width="2" stroke-linecap="round"/>
-      <line x1="12" y1="60" x2="38" y2="63" stroke="#9B6DD4" stroke-width="1.5" opacity="0.5"/>
-      <line x1="12" y1="66" x2="38" y2="65" stroke="#9B6DD4" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="63" x2="88" y2="60" stroke="#9B6DD4" stroke-width="1.5" opacity="0.5"/>
-      <line x1="62" y1="65" x2="88" y2="66" stroke="#9B6DD4" stroke-width="1.5" opacity="0.5"/>
-      <polygon points="52,30 62,24 66,33 52,33" fill="#FFE066"/>
-      <polygon points="52,30 42,24 38,33 52,33" fill="#FFE066"/>
-      <circle cx="52" cy="31" r="5" fill="#FFB800"/>
-    </symbol>
-  </defs>
-</svg>
-
 <div class="poster">
 
-    <!-- ——— HERO ——— -->
     <div class="hero">
-        <div class="hero-stars">
-            <span class="star">⭐</span><span class="star">✨</span><span class="star">🌟</span>
-            <span class="star">💖</span><span class="star">⭐</span><span class="star">✨</span>
-            <span class="star">🌸</span><span class="star">💗</span><span class="star">⭐</span>
-            <span class="star">🌟</span>
+        <div class="hero-bg-grid"></div>
+        <div class="hero-scan"></div>
+        <div class="hero-glow"></div>
+
+        <div class="hero-inner">
+            <div class="hero-text-block">
+                <div class="hero-eyebrow">EU Regulation 2024/2847</div>
+                <h1>
+                    Ship Features.<br>
+                    <span class="line-red" data-text="Not Vulnerabilities.">Not Vulnerabilities.</span>
+                </h1>
+                <p class="hero-sub">
+                    The Cyber Resilience Act rewrites the rules of software development in Europe. Compliance is not optional. It is a release blocker.
+                </p>
+                <div class="hero-badge">CRA is not optional. It is law.</div>
+            </div>
+            <div class="hero-number">CRA</div>
         </div>
 
-        <div class="hero-kitties-row">
-            <svg class="kitty-svg"><use href="#kitty-white"/></svg>
-            <svg class="kitty-svg"><use href="#kitty-pink"/></svg>
-            <svg class="kitty-svg"><use href="#kitty-blue"/></svg>
-            <svg class="kitty-svg"><use href="#kitty-mint"/></svg>
-            <svg class="kitty-svg"><use href="#kitty-yellow"/></svg>
-        </div>
-
-        <h1 class="hero-title">
-            <span class="nowrap">Ship Features.</span><br>
-            <span class="line2">Not Vulnerabilities! 🎀</span>
-        </h1>
-        <p class="hero-tagline">The Cyber Resilience Act is coming for your product, nya~! 🐱</p>
-        <div class="hero-badge">CRA IS NOT OPTIONAL — IT'S A RELEASE BLOCKER</div>
-
-        <div class="hero-stats-bar">
+        <div class="hero-bottom-bar">
             <div class="hero-stat">
                 <div class="hero-stat-num">€15M</div>
-                <div class="hero-stat-label">Max fine or 2.5% turnover 😿</div>
+                <div class="hero-stat-label">Max fine or 2.5% global turnover</div>
             </div>
             <div class="hero-stat">
                 <div class="hero-stat-num">72H</div>
-                <div class="hero-stat-label">Vulnerability report deadline ⏰</div>
+                <div class="hero-stat-label">Vulnerability report deadline</div>
             </div>
             <div class="hero-stat">
-                <div class="hero-stat-num">DEC '27</div>
-                <div class="hero-stat-label">Full compliance deadline 🎀</div>
+                <div class="hero-stat-num">DEC 2027</div>
+                <div class="hero-stat-label">Full compliance hard deadline</div>
             </div>
         </div>
     </div>
 
-    <!-- ——— INTRO STRIP ——— -->
     <div class="intro-strip">
-        <span style="font-size:22px;">😾</span>
-        <span class="intro-strip-text">Non-compliance = <span>No EU market.</span> This is not a drill, nya!</span>
-        <span style="font-size:22px;">😾</span>
+        <span class="intro-strip-label">Bottom line</span>
+        <div class="intro-strip-divider"></div>
+        <span class="intro-strip-text">Non-compliance means no EU market access.</span>
     </div>
 
-    <!-- ——— KITTY PARADE ——— -->
-    <div class="kitty-parade">
-        <div class="kitty-parade-inner">
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-            <!-- duplicate for seamless loop -->
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-        </div>
-    </div>
-
-    <!-- ——— REQUIREMENTS ——— -->
-    <div class="section-wrap">
-        <div class="section-head">
-            <div class="section-head-kitty">🎀</div>
-            <h2>6 Super Important Requirements!</h2>
-            <p>Pinky promise you'll follow all of them, okay? 🐱</p>
+    <div class="requirements">
+        <div class="section-header">
+            <span class="section-number">01</span>
+            <span class="section-title">6 Non-Negotiable Requirements</span>
+            <div class="section-line"></div>
         </div>
 
         <div class="req-grid">
-
-            <div class="req-card rc-blue">
-                <div class="card-kitty"><svg width="56" height="56"><use href="#kitty-blue"/></svg></div>
-                <span class="req-icon">🎯</span>
+            <div class="req-card c-blue">
+                <div class="req-card-bg-num">01</div>
+                <div class="req-icon-wrap">🎯</div>
                 <h3>Security by Design</h3>
                 <ul>
-                    <li>Plan threats before writing code</li>
-                    <li>Threat modeling during design phase</li>
-                    <li>Security can't be added after, nya!</li>
-                    <li>Document all decisions carefully</li>
+                    <li>Plan threats before writing a single line</li>
+                    <li>Threat modeling during the design phase</li>
+                    <li>Security cannot be bolted on afterward</li>
+                    <li>All decisions must be documented</li>
                 </ul>
             </div>
 
-            <div class="req-card rc-red">
-                <div class="card-kitty"><svg width="56" height="56"><use href="#kitty-pink"/></svg></div>
-                <span class="req-icon">🪲</span>
+            <div class="req-card c-red">
+                <div class="req-card-bg-num">02</div>
+                <div class="req-icon-wrap">🪲</div>
                 <h3>Vulnerability Management</h3>
                 <ul>
-                    <li>Active exploit = 24h early warning</li>
-                    <li>Full report required in 72 hours</li>
-                    <li>"Fix it later" is actually illegal 😿</li>
-                    <li>Coordinated disclosure required</li>
+                    <li>Active exploit requires a 24h early warning</li>
+                    <li>Full report required within 72 hours</li>
+                    <li>Fixing it in the next sprint is illegal</li>
+                    <li>Coordinated disclosure process required</li>
                 </ul>
             </div>
 
-            <div class="req-card rc-teal">
-                <div class="card-kitty"><svg width="56" height="56"><use href="#kitty-mint"/></svg></div>
-                <span class="req-icon">🔐</span>
+            <div class="req-card c-teal">
+                <div class="req-card-bg-num">03</div>
+                <div class="req-icon-wrap">🔐</div>
                 <h3>Secure by Default</h3>
                 <ul>
-                    <li>Ship safe out of the box, please!</li>
-                    <li>Zero weak default passwords 🙅</li>
+                    <li>Products must ship secure out of the box</li>
+                    <li>Zero weak or default passwords</li>
                     <li>All security features on by default</li>
-                    <li>No manual hardening needed by users</li>
+                    <li>No manual hardening required from users</li>
                 </ul>
             </div>
 
-            <div class="req-card rc-yellow">
-                <div class="card-kitty"><svg width="56" height="56"><use href="#kitty-yellow"/></svg></div>
-                <span class="req-icon">⛓️</span>
+            <div class="req-card c-amber">
+                <div class="req-card-bg-num">04</div>
+                <div class="req-icon-wrap">⛓️</div>
                 <h3>Dependency Management</h3>
                 <ul>
-                    <li>SBOM for every single library</li>
-                    <li>Auto-scan for known risks daily</li>
-                    <li>Log4j? CRA was literally made for this</li>
-                    <li>Know your full supply chain!</li>
+                    <li>SBOM required for every dependency</li>
+                    <li>Automated scanning for known risks</li>
+                    <li>Log4j-style incidents are what CRA targets</li>
+                    <li>Know your full supply chain</li>
                 </ul>
             </div>
 
-            <div class="req-card rc-lav">
-                <div class="card-kitty"><svg width="56" height="56"><use href="#kitty-lav"/></svg></div>
-                <span class="req-icon">🧪</span>
+            <div class="req-card c-purple">
+                <div class="req-card-bg-num">05</div>
+                <div class="req-icon-wrap">🧪</div>
                 <h3>Risk Assessment</h3>
                 <ul>
-                    <li>Formal threat identification required</li>
-                    <li>Done during design AND development</li>
-                    <li>Document every mitigation taken</li>
-                    <li>Risk management never stops 🌸</li>
+                    <li>Formal threat identification is mandatory</li>
+                    <li>Conducted during design and development</li>
+                    <li>Document all mitigations taken</li>
+                    <li>Risk management is an ongoing process</li>
                 </ul>
             </div>
 
-            <div class="req-card rc-green">
-                <div class="card-kitty"><svg width="56" height="56"><use href="#kitty-white"/></svg></div>
-                <span class="req-icon">📝</span>
+            <div class="req-card c-green">
+                <div class="req-card-bg-num">06</div>
+                <div class="req-icon-wrap">📝</div>
                 <h3>Technical Documentation</h3>
                 <ul>
-                    <li>Audit-ready evidence always available</li>
-                    <li>Log every design decision made</li>
+                    <li>Audit-ready evidence at all times</li>
+                    <li>Design decisions must be logged</li>
                     <li>Maintained risk register required</li>
                     <li>CE marking declaration of conformity</li>
                 </ul>
             </div>
-
         </div>
     </div>
 
-    <!-- ——— KITTY PARADE 2 ——— -->
-    <div class="kitty-parade" style="border-color: var(--hk-mint);">
-        <div class="kitty-parade-inner" style="animation-direction: reverse;">
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
+    <div class="pipeline-section">
+        <div class="section-header">
+            <span class="section-number">02</span>
+            <span class="section-title">Dev Reality Check</span>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="pipeline-label-row bad">Bad pipeline, where most teams are today</div>
+        <div class="pipeline-track bad">
+            <div class="pipeline-node">Feature</div>
+            <div class="pipeline-node">Ship</div>
+            <div class="pipeline-node">Bug Found</div>
+            <div class="pipeline-node">Ignore</div>
+            <div class="pipeline-node">Breach</div>
+        </div>
+
+        <div class="vs-divider"><span>VS</span></div>
+
+        <div class="pipeline-label-row good">CRA pipeline, where you need to be by December 2027</div>
+        <div class="pipeline-track good">
+            <div class="pipeline-node">Threat Model</div>
+            <div class="pipeline-node">Code Secure</div>
+            <div class="pipeline-node">Test and Scan</div>
+            <div class="pipeline-node">Ship Safe</div>
+            <div class="pipeline-node">Monitor</div>
         </div>
     </div>
 
-    <!-- ——— PIPELINE ——— -->
-    <div class="section-wrap alt">
-        <div class="section-head">
-            <div class="section-head-kitty">🐱</div>
-            <h2>Dev Reality Check, nya~</h2>
-            <p>Which pipeline is your team on? Choose wisely! 🌸</p>
-        </div>
-
-        <div class="pipeline-block">
-            <div class="pipeline-title bad">
-                <span class="pt-bubble">❌ Bad Pipeline</span>
-                — This is NOT the kitty way
-            </div>
-            <div class="pipeline-nodes bad">
-                <div class="p-node">Feature <span class="p-node-arrow">💗</span></div>
-                <div class="p-node">Ship It <span class="p-node-arrow">💗</span></div>
-                <div class="p-node">Bug Found <span class="p-node-arrow">💗</span></div>
-                <div class="p-node">Ignore It <span class="p-node-arrow">💗</span></div>
-                <div class="p-node">😾 Breach</div>
-            </div>
-        </div>
-
-        <div class="vs-row">— nya vs nya —</div>
-
-        <div class="pipeline-block">
-            <div class="pipeline-title good">
-                <span class="pt-bubble">✓ CRA Pipeline</span>
-                — The happy kitty way! 🎀
-            </div>
-            <div class="pipeline-nodes good">
-                <div class="p-node">Threat Model <span class="p-node-arrow">🌸</span></div>
-                <div class="p-node">Code Secure <span class="p-node-arrow">🌸</span></div>
-                <div class="p-node">Test & Scan <span class="p-node-arrow">🌸</span></div>
-                <div class="p-node">Ship Safe <span class="p-node-arrow">🌸</span></div>
-                <div class="p-node">😻 Monitor</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ——— CONSEQUENCES ——— -->
-    <div class="section-wrap">
-        <div class="section-head">
-            <div class="section-head-kitty">😿 vs 😻</div>
-            <h2>What Happens Next?</h2>
-            <p>The difference between a sad kitty and a happy kitty 🎀</p>
+    <div class="consequences-section">
+        <div class="section-header">
+            <span class="section-number">03</span>
+            <span class="section-title">Stakes</span>
+            <div class="section-line"></div>
         </div>
 
         <div class="consequences-grid">
-
-            <div class="con-panel neg">
-                <span class="con-panel-kitty">😾</span>
-                <div class="con-panel-title">If You Don't Comply</div>
-                <ul class="con-items">
-                    <li><span class="con-icon">💸</span>€15M fine OR 2.5% global turnover</li>
-                    <li><span class="con-icon">🚫</span>Products banned from EU market</li>
-                    <li><span class="con-icon">📉</span>450M customer revenue gone</li>
-                    <li><span class="con-icon">🔥</span>Reputation absolutely destroyed</li>
+            <div class="consequence-panel neg">
+                <div class="consequence-panel-label">If you don't comply</div>
+                <div class="consequence-headline">Banned.<br>Fined.<br>Done.</div>
+                <ul class="consequence-items">
+                    <li><span class="ci-icon">💸</span>Up to €15M or 2.5% of global annual turnover</li>
+                    <li><span class="ci-icon">🚫</span>Products banned from EU market immediately</li>
+                    <li><span class="ci-icon">📉</span>Revenue stream from 450M consumers eliminated</li>
+                    <li><span class="ci-icon">🔥</span>Brand reputation destroyed publicly</li>
                 </ul>
-                <div class="big-kitty-bg">😿</div>
+                <div class="big-penalty">€15M</div>
             </div>
 
-            <div class="con-panel pos">
-                <span class="con-panel-kitty">😸</span>
-                <div class="con-panel-title">If You Do Comply</div>
-                <ul class="con-items">
-                    <li><span class="con-icon">🇪🇺</span>Full EU single market access!</li>
-                    <li><span class="con-icon">🤝</span>Customer trust, yay!</li>
-                    <li><span class="con-icon">⚡</span>Faster incident response</li>
-                    <li><span class="con-icon">🛠</span>Fewer post-launch fires 🌸</li>
+            <div class="consequence-panel pos">
+                <div class="consequence-panel-label">If you do comply</div>
+                <div class="consequence-headline">Trusted.<br>Selling.<br>Safe.</div>
+                <ul class="consequence-items">
+                    <li><span class="ci-icon">🇪🇺</span>Full, unobstructed EU single market access</li>
+                    <li><span class="ci-icon">🤝</span>Customer and enterprise trust earned</li>
+                    <li><span class="ci-icon">⚡</span>Dramatically faster incident response</li>
+                    <li><span class="ci-icon">🛠</span>Fewer post-launch firefights and hotfixes</li>
                 </ul>
-                <div class="big-kitty-bg">😻</div>
             </div>
-
         </div>
     </div>
 
-    <!-- ——— TIMELINE ——— -->
-    <div class="section-wrap alt">
-        <div class="section-head">
-            <div class="section-head-kitty">⏰</div>
-            <h2>The Clock Is Ticking!</h2>
-            <p>Don't be a sleepy kitty — start now! 🌸</p>
+    <div class="timeline-section">
+        <div class="section-header">
+            <span class="section-number">04</span>
+            <span class="section-title">The Clock</span>
+            <div class="section-line"></div>
         </div>
 
-        <div class="timeline-nodes">
+        <div class="timeline-track">
+            <div class="timeline-line"></div>
+            <div class="timeline-nodes">
 
-            <div class="tl-node">
-                <div class="tl-dot"><svg width="36" height="36"><use href="#kitty-white"/></svg></div>
-                <div class="tl-date">Start Today!</div>
-                <div class="tl-event">Build the practice</div>
-                <div class="tl-desc">
-                    Secure-by-design is a culture change. Begin threat modeling, SBOM generation, and risk registers NOW. Can't cram it all in 2027, nya~!
+                <div class="timeline-node">
+                    <div class="timeline-dot-wrap">
+                        <div class="timeline-dot">NOW</div>
+                    </div>
+                    <div class="timeline-date">Start Today</div>
+                    <div class="timeline-event">Build the practice</div>
+                    <div class="timeline-desc">
+                        Secure-by-design is a culture shitf. Begin threat modeling, SBOM generation, and risk registers today. This cannot be crammed in 2027.
+                    </div>
                 </div>
-            </div>
 
-            <div class="tl-node">
-                <div class="tl-dot"><svg width="36" height="36"><use href="#kitty-yellow"/></svg></div>
-                <div class="tl-date">Sept 11, 2026</div>
-                <div class="tl-event">Reporting Obligations Live</div>
-                <div class="tl-desc">
-                    Active exploits must be reported in 24 hours. Full technical reports within 72 hours. No excuses! Be a responsible kitty! 🎀
+                <div class="timeline-node">
+                    <div class="timeline-dot-wrap">
+                        <div class="timeline-dot">09/26</div>
+                    </div>
+                    <div class="timeline-date">September 11, 2026</div>
+                    <div class="timeline-event">Reporting obligations live</div>
+                    <div class="timeline-desc">
+                        Vulnerability reporting requirements activate. Active exploits must be reported within 24 hours. Full technical reports within 72 hours.
+                    </div>
                 </div>
-            </div>
 
-            <div class="tl-node">
-                <div class="tl-dot"><svg width="36" height="36"><use href="#kitty-pink"/></svg></div>
-                <div class="tl-date">Dec 11, 2027</div>
-                <div class="tl-event">THE HARD DEADLINE 😾</div>
-                <div class="tl-desc">
-                    Full compliance required. No extensions. Non-compliant products CANNOT be sold in the EU. This is the wall, nya! Don't hit it!
+                <div class="timeline-node">
+                    <div class="timeline-dot-wrap">
+                        <div class="timeline-dot">WALL</div>
+                    </div>
+                    <div class="timeline-date">December 11, 2027</div>
+                    <div class="timeline-event">Full compliance required</div>
+                    <div class="timeline-desc">
+                        All products must be fully compliant. There are no extensions. Non-compliant products cannot be placed on the EU market.
+                    </div>
                 </div>
+
             </div>
-
-        </div>
-    </div>
-
-    <!-- ——— KITTY PARADE 3 ——— -->
-    <div class="kitty-parade" style="border-color: var(--hk-lavender);">
-        <div class="kitty-parade-inner">
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
-            <svg width="56" height="56"><use href="#kitty-white"/></svg>
-            <svg width="56" height="56"><use href="#kitty-lav"/></svg>
-            <svg width="56" height="56"><use href="#kitty-pink"/></svg>
-            <svg width="56" height="56"><use href="#kitty-yellow"/></svg>
-            <svg width="56" height="56"><use href="#kitty-mint"/></svg>
-            <svg width="56" height="56"><use href="#kitty-blue"/></svg>
         </div>
     </div>
 
-    <!-- ——— CTA ——— -->
     <div class="cta-section">
-        <div class="cta-kitties">
-            <svg><use href="#kitty-white"/></svg>
-            <svg><use href="#kitty-pink"/></svg>
-            <svg><use href="#kitty-yellow"/></svg>
-            <svg><use href="#kitty-mint"/></svg>
-            <svg><use href="#kitty-blue"/></svg>
+        <div class="cta-inner">
+            <div>
+                <div class="cta-headline">Build Safe.<br>Sell in Europe.</div>
+                <p class="cta-body">
+                    Your team has until December 2027 to align development practices, secure architectures, and document compliance. That runway is shorter than it sounds. Start now.
+                </p>
+            </div>
+            <button class="cta-btn">Start Your CRA Checklist</button>
         </div>
-        <h2 class="cta-headline">Build Safe. Sell in Europe. 🌸</h2>
-        <p class="cta-body">
-            Your team has until December 2027 to align dev practices, build secure architectures, and document compliance. That runway is shorter than it sounds! Please start now — kitty says so! 🐱
-        </p>
-        <button class="cta-btn">Start Your CRA Checklist</button>
     </div>
 
-    <!-- ——— FOOTER ——— -->
     <div class="footer">
         <div class="footer-left">
-            CYBER RESILIENCE ACT · EU REGULATION 2024/2847<br>
-            APPLICABLE FROM DECEMBER 11, 2027 · PRINT &amp; POST FOR YOUR TEAM! 🎀
+            CYBER RESILIENCE ACT &nbsp; EU REGULATION 2024/2847<br>
+            APPLICABLE FROM DECEMBER 11, 2027 &nbsp; PRINT AND POST THIS
         </div>
-        <div class="footer-right">
-            <svg width="48" height="48" style="vertical-align:middle"><use href="#kitty-white"/></svg>
-            CRA 🎀
-        </div>
+        <div class="footer-right">CRA</div>
     </div>
 
 </div>
