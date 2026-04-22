@@ -1,676 +1,147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRA Campaign Poster - Ship Features, Not Vulnerabilities</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-        }
-        
-        .poster {
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            background: #fff;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            overflow: hidden;
-        }
-        
-        /* ===== HERO SECTION ===== */
-        .hero {
-            background: linear-gradient(135deg, #1a1a18 0%, #2c2c2a 100%);
-            padding: 60px 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(239, 159, 39, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero h1 {
-            font-size: 52px;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-        }
-        
-        .hero h1 .highlight {
-            color: #ef9f27;
-            display: block;
-        }
-        
-        .hero .tagline {
-            font-size: 18px;
-            color: #d3d1c7;
-            margin-bottom: 30px;
-            font-weight: 500;
-        }
-        
-        .banner {
-            background: #e24b4a;
-            padding: 16px 32px;
-            display: inline-block;
-            border-radius: 6px;
-            color: #fff;
-            font-weight: 700;
-            font-size: 16px;
-            letter-spacing: 0.5px;
-        }
-        
-        /* ===== INTRO SECTION ===== */
-        .intro {
-            padding: 40px;
-            background: #fafafa;
-            border-bottom: 3px solid #ef9f27;
-            text-align: center;
-        }
-        
-        .intro p {
-            font-size: 16px;
-            color: #888780;
-            margin-bottom: 16px;
-            line-height: 1.6;
-        }
-        
-        .intro .emphasis {
-            font-size: 18px;
-            color: #e24b4a;
-            font-weight: 700;
-            margin: 20px 0;
-        }
-        
-        /* ===== REQUIREMENTS GRID ===== */
-        .requirements {
-            padding: 50px 40px;
-            background: #fff;
-        }
-        
-        .requirements h2 {
-            text-align: center;
-            font-size: 28px;
-            color: #1a1a18;
-            margin-bottom: 40px;
-            font-weight: 600;
-        }
-        
-        .req-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .req-card {
-            padding: 28px;
-            border-radius: 10px;
-            border-left: 6px solid;
-            background: #fafafa;
-            transition: all 0.3s;
-        }
-        
-        .req-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-        }
-        
-        .req-card.blue {
-            border-left-color: #185fa5;
-            background: #e6f1fb;
-        }
-        
-        .req-card.red {
-            border-left-color: #e24b4a;
-            background: #fcebeb;
-        }
-        
-        .req-card.teal {
-            border-left-color: #0f6e56;
-            background: #e1f5ee;
-        }
-        
-        .req-card.amber {
-            border-left-color: #ba7517;
-            background: #faeeda;
-        }
-        
-        .req-card.purple {
-            border-left-color: #534ab7;
-            background: #eeedfe;
-        }
-        
-        .req-card.green {
-            border-left-color: #3b6d11;
-            background: #eaf3de;
-        }
-        
-        .req-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
-        }
-        
-        .req-card h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .req-card.blue h3 { color: #0c447c; }
-        .req-card.red h3 { color: #a32d2d; }
-        .req-card.teal h3 { color: #085041; }
-        .req-card.amber h3 { color: #633806; }
-        .req-card.purple h3 { color: #3c3489; }
-        .req-card.green h3 { color: #27500a; }
-        
-        .req-card ul {
-            list-style: none;
-        }
-        
-        .req-card li {
-            padding: 8px 0;
-            padding-left: 24px;
-            position: relative;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        
-        .req-card li:before {
-            content: "▸";
-            position: absolute;
-            left: 0;
-            font-weight: 700;
-            font-size: 16px;
-        }
-        
-        .req-card.blue li:before { color: #185fa5; }
-        .req-card.red li:before { color: #e24b4a; }
-        .req-card.teal li:before { color: #0f6e56; }
-        .req-card.amber li:before { color: #ba7517; }
-        .req-card.purple li:before { color: #534ab7; }
-        .req-card.green li:before { color: #3b6d11; }
-        
-        .req-card li {
-            color: #555;
-        }
-        
-        /* ===== REALITY CHECK SECTION ===== */
-        .reality-check {
-            background: linear-gradient(135deg, #1a1a18 0%, #3d3d3a 100%);
-            padding: 50px 40px;
-            margin: 40px 0;
-        }
-        
-        .reality-check h2 {
-            color: #fff;
-            font-size: 28px;
-            margin-bottom: 40px;
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        .pipeline {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-        
-        .pipeline-step {
-            padding: 20px;
-            text-align: center;
-            border-radius: 6px;
-            font-weight: 600;
-            color: #fff;
-            font-size: 14px;
-            position: relative;
-        }
-        
-        .pipeline-step.bad {
-            background: #993c1d;
-        }
-        
-        .pipeline-step.good {
-            background: #3b6d11;
-        }
-        
-        .pipeline-step::after {
-            content: '→';
-            position: absolute;
-            right: -20px;
-            font-size: 20px;
-            color: #d3d1c7;
-        }
-        
-        .pipeline-step:last-child::after {
-            content: '';
-        }
-        
-        .pipeline-label {
-            background: #e24b4a;
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            display: inline-block;
-            margin-top: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .pipeline-step.good .pipeline-label {
-            background: #639922;
-        }
-        
-        /* ===== CONSEQUENCES SECTION ===== */
-        .consequences {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-        
-        .consequence-box {
-            padding: 30px;
-            border-radius: 10px;
-            color: #fff;
-            text-align: center;
-        }
-        
-        .consequence-box.negative {
-            background: linear-gradient(135deg, #a32d2d 0%, #e24b4a 100%);
-        }
-        
-        .consequence-box.positive {
-            background: linear-gradient(135deg, #27500a 0%, #3b6d11 100%);
-        }
-        
-        .consequence-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .consequence-content {
-            font-size: 14px;
-            line-height: 1.7;
-        }
-        
-        /* ===== TIMELINE ===== */
-        .timeline {
-            background: #fafafa;
-            padding: 50px 40px;
-            border-top: 3px solid #ef9f27;
-            border-bottom: 3px solid #ef9f27;
-        }
-        
-        .timeline h2 {
-            text-align: center;
-            font-size: 28px;
-            color: #1a1a18;
-            margin-bottom: 40px;
-            font-weight: 600;
-        }
-        
-        .timeline-items {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-        }
-        
-        .timeline-item {
-            text-align: center;
-        }
-        
-        .timeline-date {
-            background: #1a1a18;
-            color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-        
-        .timeline-item.urgent .timeline-date {
-            background: #e24b4a;
-        }
-        
-        .timeline-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a1a18;
-            margin-bottom: 8px;
-        }
-        
-        .timeline-desc {
-            font-size: 13px;
-            color: #888780;
-            line-height: 1.6;
-        }
-        
-        /* ===== CTA SECTION ===== */
-        .cta {
-            background: linear-gradient(135deg, #1a1a18 0%, #2c2c2a 100%);
-            padding: 60px 40px;
-            text-align: center;
-        }
-        
-        .cta h2 {
-            color: #fff;
-            font-size: 32px;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        
-        .cta p {
-            color: #d3d1c7;
-            font-size: 16px;
-            margin-bottom: 30px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.7;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            padding: 18px 40px;
-            background: #ef9f27;
-            color: #1a1a18;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 16px;
-            transition: all 0.3s;
-            border: 2px solid #ef9f27;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-        }
-        
-        .cta-button:hover {
-            background: #e8941f;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(239, 159, 39, 0.3);
-        }
-        
-        /* ===== FOOTER ===== */
-        .footer {
-            background: #1a1a18;
-            padding: 30px 40px;
-            text-align: center;
-            color: #888780;
-            font-size: 12px;
-        }
-        
-        .footer p {
-            margin: 6px 0;
-        }
-        
-        /* ===== PRINT STYLES ===== */
-        @media print {
-            body {
-                padding: 0;
-            }
-            
-            .poster {
-                box-shadow: none;
-                max-width: 100%;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 36px;
-            }
-            
-            .req-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .timeline-items {
-                grid-template-columns: 1fr;
-            }
-            
-            .consequences {
-                grid-template-columns: 1fr;
-            }
-            
-            .pipeline {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-    </style>
+    <title>CRA Kampagneplakat - Byg features, ikke sårbarheder</title>
 </head>
 <body>
-    <div class="poster">
-        <!-- HERO -->
-        <div class="hero">
-            <div class="hero-content">
-                <h1>
-                    Ship Features.<br>
-                    <span class="highlight">Don't Ship Vulnerabilities.</span>
-                </h1>
-                <p class="tagline">The Cyber Resilience Act is coming for your product.</p>
-                <div class="banner">CRA IS NOT OPTIONAL. IT'S A RELEASE BLOCKER.</div>
-            </div>
-        </div>
-        
-        <!-- INTRO -->
-        <div class="intro">
-            <p>The <strong>Cyber Resilience Act</strong> is an EU law that mandates secure software & products.</p>
-            <div class="emphasis">NON-COMPLIANCE = NO EU MARKET.</div>
-            <p>This isn't a compliance checkbox. This is your product's market access.</p>
-        </div>
-        
-        <!-- REQUIREMENTS -->
-        <div class="requirements">
-            <h2>6 Non-Negotiable Requirements</h2>
-            
-            <div class="req-grid">
-                <!-- 1 -->
-                <div class="req-card blue">
-                    <div class="req-icon">🎯</div>
-                    <h3>Security by Design</h3>
-                    <ul>
-                        <li>Plan threats before coding</li>
-                        <li>Threat modeling during design</li>
-                        <li>Not bolted on after</li>
-                        <li>Documented decisions</li>
-                    </ul>
-                </div>
-                
-                <!-- 2 -->
-                <div class="req-card red">
-                    <div class="req-icon">🪲</div>
-                    <h3>Vulnerability Management</h3>
-                    <ul>
-                        <li>Find & fix vulnerabilities</li>
-                        <li>24h early warning required</li>
-                        <li>72h full report required</li>
-                        <li>"Fix it later" = illegal</li>
-                    </ul>
-                </div>
-                
-                <!-- 3 -->
-                <div class="req-card teal">
-                    <div class="req-icon">🔐</div>
-                    <h3>Secure by Default</h3>
-                    <ul>
-                        <li>Ship secure out of the box</li>
-                        <li>No weak default passwords</li>
-                        <li>All security enabled</li>
-                        <li>No manual hardening</li>
-                    </ul>
-                </div>
-                
-                <!-- 4 -->
-                <div class="req-card amber">
-                    <div class="req-icon">⛓️</div>
-                    <h3>Dependency Management</h3>
-                    <ul>
-                        <li>SBOM for every library</li>
-                        <li>Auto-scan for risks</li>
-                        <li>Log4j? CRA targets this</li>
-                        <li>Know your supply chain</li>
-                    </ul>
-                </div>
-                
-                <!-- 5 -->
-                <div class="req-card purple">
-                    <div class="req-icon">🧪</div>
-                    <h3>Risk Assessment</h3>
-                    <ul>
-                        <li>Identify threats formally</li>
-                        <li>During design & development</li>
-                        <li>Document mitigations</li>
-                        <li>Risk management is iterative</li>
-                    </ul>
-                </div>
-                
-                <!-- 6 -->
-                <div class="req-card green">
-                    <div class="req-icon">📝</div>
-                    <h3>Technical Documentation</h3>
-                    <ul>
-                        <li>Audit-ready evidence</li>
-                        <li>Design decisions logged</li>
-                        <li>Risk register maintained</li>
-                        <li>CE marking proof</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        
-        <!-- REALITY CHECK -->
-        <div class="reality-check">
-            <h2>Dev Reality Check</h2>
-            
-            <div style="text-align: center; margin-bottom: 30px;">
-                <p style="color: #d3d1c7; margin-bottom: 20px; font-size: 14px;">Which pipeline is your team on?</p>
-                
-                <div class="pipeline">
-                    <div class="pipeline-step bad">Feature</div>
-                    <div class="pipeline-step bad">Ship</div>
-                    <div class="pipeline-step bad">Bug</div>
-                    <div class="pipeline-step bad">Ignore</div>
-                    <div class="pipeline-step bad">Breach</div>
-                </div>
-                <span class="pipeline-label">❌ Bad Pipeline</span>
-                
-                <p style="color: #d3d1c7; margin: 40px 0 20px; font-size: 14px;">VS</p>
-                
-                <div class="pipeline">
-                    <div class="pipeline-step good">Threat Model</div>
-                    <div class="pipeline-step good">Code Secure</div>
-                    <div class="pipeline-step good">Test</div>
-                    <div class="pipeline-step good">Ship Safe</div>
-                    <div class="pipeline-step good">Monitor</div>
-                </div>
-                <span class="pipeline-label">✓ CRA Pipeline</span>
-            </div>
-        </div>
-        
-        <!-- CONSEQUENCES -->
-        <div style="padding: 40px; background: #fff;">
-            <div class="consequences">
-                <div class="consequence-box negative">
-                    <div class="consequence-title">If You Don't Comply</div>
-                    <div class="consequence-content">
-                        €15 Million OR 2.5% global turnover<br><br>
-                        Products banned from EU market<br><br>
-                        Revenue eliminated<br><br>
-                        Reputation destroyed
-                    </div>
-                </div>
-                
-                <div class="consequence-box positive">
-                    <div class="consequence-title">If You Do Comply</div>
-                    <div class="consequence-content">
-                        Full EU market access<br><br>
-                        Customer trust<br><br>
-                        Faster incident response<br><br>
-                        Fewer post-launch fires
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- TIMELINE -->
-        <div class="timeline">
-            <h2>The Clock Is Ticking</h2>
-            
-            <div class="timeline-items">
-                <div class="timeline-item">
-                    <div class="timeline-date">Now</div>
-                    <div class="timeline-label">Start Building</div>
-                    <div class="timeline-desc">
-                        Secure-by-design is a practice change. It takes time. Begin threat modeling, dependency tracking, and risk assessment NOW.
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-date">Sept 11, 2026</div>
-                    <div class="timeline-label">Reporting Begins</div>
-                    <div class="timeline-desc">
-                        Vulnerability reporting obligations kick in. You must report active exploits within 24 hours and file full reports within 72 hours.
-                    </div>
-                </div>
-                
-                <div class="timeline-item urgent">
-                    <div class="timeline-date">Dec 11, 2027</div>
-                    <div class="timeline-label">Hard Deadline</div>
-                    <div class="timeline-desc">
-                        All products must comply. Non-compliant products cannot be sold in EU. This is the wall.
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- CTA -->
-        <div class="cta">
-            <h2>Build Safe. Sell in Europe.</h2>
-            <p>
-                Your team has 18 months to align development practices, build secure architectures, and document compliance. 
-                Don't wait until December 2027 to start.
-            </p>
-            <button class="cta-button">Start Your CRA Checklist</button>
-        </div>
-        
-        <!-- FOOTER -->
-        <div class="footer">
-            <p><strong>Cyber Resilience Act Campaign Poster</strong></p>
-            <p>EU Regulation 2024/2847 | Applicable December 11, 2027</p>
-            <p>Print this poster. Post it on your team wall. Share with your development team.</p>
-        </div>
-    </div>
+
+<h1>Udgiv features.<br>Udgiv ikke sårbarheder.</h1>
+
+<p><strong>Cyber Resilience Act</strong> er på vej – og den gælder jeres produkt.</p>
+
+<p><strong>CRA er ikke valgfri. Den kan blokere jeres release.</strong></p>
+
+<hr>
+
+<h2>Hvad betyder det?</h2>
+
+<p>
+Cyber Resilience Act er en EU-lov, der stiller krav til sikker software og produkter.
+</p>
+
+<p><strong>Hvis I ikke overholder den → kan I ikke sælge i EU.</strong></p>
+
+<p>
+Det her er ikke bare noget “compliance”. Det handler om, hvorvidt jeres produkt overhovedet må være på markedet.
+</p>
+
+<hr>
+
+<h2>6 krav I ikke kan ignorere</h2>
+
+<h3>1. Security by Design</h3>
+<ul>
+    <li>Tænk sikkerhed før I koder</li>
+    <li>Lav threat modeling i designfasen</li>
+    <li>Ikke noget man “lige tilføjer bagefter”</li>
+    <li>Dokumentér jeres valg</li>
+</ul>
+
+<h3>2. Håndtering af sårbarheder</h3>
+<ul>
+    <li>Find og fix sårbarheder</li>
+    <li>Varsling inden for 24 timer</li>
+    <li>Fuld rapport inden for 72 timer</li>
+    <li>“Vi fixer det senere” er ikke en mulighed</li>
+</ul>
+
+<h3>3. Secure by Default</h3>
+<ul>
+    <li>Produktet skal være sikkert fra start</li>
+    <li>Ingen svage standard passwords</li>
+    <li>Sikkerhed skal være slået til</li>
+    <li>Ingen manuel hardening nødvendig</li>
+</ul>
+
+<h3>4. Dependency styring</h3>
+<ul>
+    <li>Overblik over alle libraries (SBOM)</li>
+    <li>Scan automatisk for risici</li>
+    <li>Ja, ting som Log4j er præcis det CRA går efter</li>
+    <li>Kend jeres supply chain</li>
+</ul>
+
+<h3>5. Risikovurdering</h3>
+<ul>
+    <li>Identificér trusler systematisk</li>
+    <li>Både i design og udvikling</li>
+    <li>Dokumentér hvordan I håndterer dem</li>
+    <li>Det er en løbende proces</li>
+</ul>
+
+<h3>6. Dokumentation</h3>
+<ul>
+    <li>Klar til audit</li>
+    <li>Designbeslutninger dokumenteret</li>
+    <li>Vedligehold en risk log</li>
+    <li>Bevis for CE-mærkning</li>
+</ul>
+
+<hr>
+
+<h2>Reality check</h2>
+
+<p><strong>Hvilken pipeline kører I?</strong></p>
+
+<p>
+Feature → Ship → Bug → Ignorer → Breach ❌
+</p>
+
+<p>eller</p>
+
+<p>
+Threat model → Sikker kode → Test → Ship sikkert → Monitor ✓
+</p>
+
+<hr>
+
+<h2>Konsekvenser</h2>
+
+<h3>Hvis I ikke overholder det</h3>
+<ul>
+    <li>Bøder op til €15 mio. eller 2,5% af omsætning</li>
+    <li>Produktet må ikke sælges i EU</li>
+    <li>Tab af indtjening</li>
+    <li>Skadet omdømme</li>
+</ul>
+
+<h3>Hvis I gør</h3>
+<ul>
+    <li>Adgang til hele EU-markedet</li>
+    <li>Mere tillid fra kunder</li>
+    <li>Hurtigere reaktion på incidents</li>
+    <li>Færre problemer efter release</li>
+</ul>
+
+<hr>
+
+<h2>Tidslinje</h2>
+
+<p><strong>Nu:</strong> Kom i gang – det her tager tid</p>
+
+<p><strong>11. september 2026:</strong> Krav om rapportering starter</p>
+
+<p><strong>11. december 2027:</strong> Deadline – alt skal være compliant</p>
+
+<hr>
+
+<h2>Byg sikkert. Sælg i Europa.</h2>
+
+<p>
+I har cirka 18 måneder til at få styr på processer, arkitektur og dokumentation.
+Vent ikke til sidste øjeblik.
+</p>
+
+<button>Start jeres CRA tjekliste</button>
+
+<hr>
+
+<p>
+Cyber Resilience Act kampagne<br>
+Gælder fra 11. december 2027
+</p>
+
 </body>
 </html>
